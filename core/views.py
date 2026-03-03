@@ -1,6 +1,5 @@
 import os
 from django.conf import settings
-from django.shortcuts import render
 from .models import EnerjiHesaplayiciAyar, Kategori, Proje
 from django.http import HttpResponse
 from django.template.loader import get_template
@@ -35,17 +34,20 @@ def pdf_olustur(request):
     else:
         secilen_projeler = []
 
-    # Logo ve Font dosyasının tam yollarını belirliyoruz
+    # LOGO VE FONT YOLLARI
     logo_tam_yol = os.path.join(settings.BASE_DIR, 'core', 'static', 'core', 'images', 'logo.png')
-    font_tam_yol = os.path.join(settings.BASE_DIR, 'core', 'static', 'core', 'fonts', 'Roboto-Regular.ttf') # YENİ
+
+    # DİKKAT: Fontun tam adını senin klasörüne yüklediğin şekilde yazdım
+    font_tam_yol = os.path.join(settings.BASE_DIR, 'core', 'static', 'core', 'fonts',
+                                'Roboto_SemiCondensed-Regular.ttf')
 
     template = get_template('core/pdf_sablonu.html')
 
-    # font_yolu değişkenini de context içine ekliyoruz ki HTML bunu alabilsin
+    # Font yolunu HTML'e gönderiyoruz
     context = {
         'projeler': secilen_projeler,
         'logo_yolu': logo_tam_yol,
-        'font_yolu': font_tam_yol # YENİ
+        'font_yolu': font_tam_yol
     }
 
     html = template.render(context)
@@ -53,7 +55,7 @@ def pdf_olustur(request):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="Zafer_Tech_Ozel_Katalog.pdf"'
 
-    # YENİ: UTF-8 encoding belirterek Türkçe patlamasının önüne geçiyoruz
+    # DİKKAT: UTF-8 encoding çok önemli! Yoksa siyah kutu çıkar.
     pisa_status = pisa.CreatePDF(html.encode("utf-8"), dest=response, encoding='utf-8')
 
     if pisa_status.err:
