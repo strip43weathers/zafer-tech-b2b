@@ -35,15 +35,17 @@ def pdf_olustur(request):
     else:
         secilen_projeler = []
 
-    # LOGO YOLUNU BULUYORUZ: İşletim sistemindeki tam dosya yolunu alıyoruz
+    # Logo ve Font dosyasının tam yollarını belirliyoruz
     logo_tam_yol = os.path.join(settings.BASE_DIR, 'core', 'static', 'core', 'images', 'logo.png')
+    font_tam_yol = os.path.join(settings.BASE_DIR, 'core', 'static', 'core', 'fonts', 'Roboto-Regular.ttf') # YENİ
 
     template = get_template('core/pdf_sablonu.html')
 
-    # logo_tam_yol değişkenini de context içine ekliyoruz ki HTML bunu alabilsin
+    # font_yolu değişkenini de context içine ekliyoruz ki HTML bunu alabilsin
     context = {
         'projeler': secilen_projeler,
-        'logo_yolu': logo_tam_yol
+        'logo_yolu': logo_tam_yol,
+        'font_yolu': font_tam_yol # YENİ
     }
 
     html = template.render(context)
@@ -51,7 +53,8 @@ def pdf_olustur(request):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="Zafer_Tech_Ozel_Katalog.pdf"'
 
-    pisa_status = pisa.CreatePDF(html, dest=response)
+    # YENİ: UTF-8 encoding belirterek Türkçe patlamasının önüne geçiyoruz
+    pisa_status = pisa.CreatePDF(html.encode("utf-8"), dest=response, encoding='utf-8')
 
     if pisa_status.err:
         return HttpResponse('PDF oluşturulurken bir hata meydana geldi.')
