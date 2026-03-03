@@ -1,0 +1,19 @@
+# Python önbellek dosyaları
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Sanal ortam (Eğer venv veya env kullanıyorsan)
+venv/
+env/
+
+# Veritabanı dosyası (Her sunucunun kendi veritabanı olmalı)
+db.sqlite3
+
+# Kullanıcıların yüklediği medya dosyaları (Şantiye fotoları vs.)
+media/
+
+# Çevresel değişkenler ve gizli dosyalar
+.env
+.idea/
+.DS_Store

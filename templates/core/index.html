@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zafer Tech | Elektrik Proje & Taahhüt</title>
+    
+    <style>
+        /* Yumuşak kaydırma (Smooth Scroll) eklendi */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* --- 1. SİTE RENK DEĞİŞKENLERİ VE GECE MODU --- */
+        :root {
+            --bg-color: #f8f9fa;
+            --text-color: #333333;
+            --primary-color: #0056b3; 
+            --card-bg: #ffffff;
+            --border-color: #dddddd;
+            --shadow-color: rgba(0,0,0,0.1);
+            --card-text-color: #555555; 
+        }
+
+        .dark-mode {
+            --bg-color: #121212; 
+            --text-color: #e0e0e0;
+            --primary-color: #00e5ff; 
+            --card-bg: #1e1e1e;
+            --border-color: #333333;
+            --shadow-color: rgba(0, 229, 255, 0.2);
+            --card-text-color: #aaaaaa; 
+        }
+
+        /* --- 2. GENEL GÖRÜNÜM AYARLARI --- */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.4s ease, color 0.4s ease;
+            margin: 0;
+            padding: 0; 
+        }
+
+        h2, h3, h4 { color: var(--primary-color); transition: color 0.4s ease; }
+
+        /* --- 3. PROFESYONEL NAVBAR STİLLERİ --- */
+        .pro-navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 4px 15px var(--shadow-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            transition: all 0.4s ease;
+        }
+        .nav-brand {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--primary-color);
+            text-decoration: none;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            margin: 0;
+            padding: 0;
+        }
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+        .nav-menu a:hover::after { width: 100%; }
+        .nav-menu a:hover { color: var(--primary-color); }
+        
+        .nav-actions { display: flex; align-items: center; gap: 20px; }
+        .btn-b2b {
+            background: linear-gradient(90deg, #0056b3, #007bff);
+            color: white !important;
+            padding: 10px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            box-shadow: 0 4px 10px rgba(0, 86, 179, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .btn-b2b:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 86, 179, 0.5);
+        }
+
+        /* --- 4. ŞALTER (GECE MODU) STİLLERİ --- */
+        .theme-switch-wrapper {
+            display: flex;
+            align-items: center;
+        }
+        .theme-switch {
+            display: inline-block;
+            height: 30px;
+            position: relative;
+            width: 54px;
+        }
+        .theme-switch input { display: none; }
+        .slider {
+            background-color: #ccc;
+            bottom: 0;
+            cursor: pointer;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            background-color: #fff;
+            bottom: 3px;
+            content: "";
+            height: 24px;
+            left: 4px;
+            position: absolute;
+            transition: .4s;
+            width: 24px;
+            border-radius: 50%;
+        }
+        input:checked + .slider { background-color: var(--primary-color); }
+        input:checked + .slider:before { transform: translateX(22px); }
+        .slider-text {
+            margin-right: 10px;
+            font-weight: bold;
+            font-size: 13px;
+            color: var(--text-color);
+            transition: color 0.4s ease;
+        }
+
+        /* --- 5. HERO (KARŞILAMA) ALANI STİLLERİ --- */
+        .hero-section {
+            position: relative;
+            height: 70vh; 
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.6)), 
+                        url('https://images.unsplash.com/photo-1541888086225-eb1d81b40282?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;
+            color: #ffffff;
+        }
+        .hero-content { max-width: 900px; padding: 0 20px; z-index: 2; }
+        .hero-content h1 {
+            font-size: 52px; font-weight: 800; margin-bottom: 20px;
+            color: #ffffff; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); line-height: 1.2;
+        }
+        .hero-content h1 span { color: #00e5ff; }
+        .hero-content p { font-size: 20px; margin-bottom: 40px; color: #e0e0e0; line-height: 1.6; }
+        .hero-buttons { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .btn-primary {
+            background-color: var(--primary-color); color: white; padding: 15px 35px;
+            border-radius: 5px; text-decoration: none; font-size: 16px; font-weight: bold; transition: background 0.3s;
+        }
+        .btn-primary:hover { background-color: #004494; }
+        .btn-outline {
+            background-color: transparent; color: white; border: 2px solid white; padding: 15px 35px;
+            border-radius: 5px; text-decoration: none; font-size: 16px; font-weight: bold; transition: all 0.3s;
+        }
+        .btn-outline:hover { background-color: white; color: #333; }
+        
+        /* --- 5.5 KURUMSAL (HAKKIMIZDA / MİSYON / VİZYON) STİLLERİ --- */
+        .about-section {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 80px 20px 0; /* Menü kaymasını dengelemek için üst padding */
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+        .about-text h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            position: relative;
+            padding-bottom: 10px;
+        }
+        .about-text h2::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+        .about-text p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--text-color);
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        .mv-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .mv-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 10px;
+            border-left: 5px solid var(--primary-color);
+            box-shadow: 0 4px 15px var(--shadow-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .mv-card:hover {
+            transform: translateX(10px); 
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        .mv-card h3 {
+            margin: 0 0 15px 0;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .mv-card p {
+            margin: 0;
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--card-text-color);
+        }
+        @media (max-width: 900px) {
+            .about-section { grid-template-columns: 1fr; gap: 30px; }
+        }
+        
+        /* --- 6. HİZMETLERİMİZ STİLLERİ --- */
+        .services-section {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 80px 20px 0; /* Menü kaymasını dengelemek için */
+            text-align: center;
+        }
+        .services-section h2 {
+            font-size: 32px;
+            margin-bottom: 50px;
+            color: var(--primary-color);
+            position: relative;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+        .services-section h2::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .service-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 40px 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px var(--shadow-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            border-color: var(--primary-color);
+        }
+        .service-icon {
+            font-size: 45px;
+            margin-bottom: 20px;
+            display: inline-block;
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            width: 80px;
+            height: 80px;
+            line-height: 80px;
+            border-radius: 50%;
+        }
+        .dark-mode .service-icon {
+            background: linear-gradient(135deg, #0d47a1, #1565c0);
+        }
+        .service-card h3 {
+            font-size: 20px;
+            color: var(--text-color);
+            margin-bottom: 15px;
+        }
+        .service-card p {
+            font-size: 15px;
+            color: var(--card-text-color);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* --- 7. HESAPLAYICI STİLLERİ --- */
+        .calculator-container { 
+            max-width: 600px; margin: 80px auto 50px auto; background: var(--card-bg); 
+            padding: 40px; border-radius: 12px; border: 1px solid var(--border-color);
+            box-shadow: 0 4px 15px var(--shadow-color); text-align: center; transition: all 0.4s ease;
+        }
+        .input-group { margin: 20px 0; }
+        input[type="number"] { 
+            width: 80%; padding: 15px; font-size: 18px; border: 2px solid var(--border-color); 
+            border-radius: 8px; outline: none; background-color: var(--bg-color);
+            color: var(--text-color); transition: border-color 0.3s, background-color 0.4s, color 0.4s; 
+        }
+        input[type="number"]:focus { border-color: var(--primary-color); }
+        .calc-btn { 
+            background-color: var(--primary-color); color: white; border: none; padding: 15px 30px; 
+            font-size: 18px; border-radius: 8px; cursor: pointer; transition: background 0.3s; width: 85%; 
+        }
+        .calc-btn:hover { filter: brightness(0.9); }
+        
+        .result-box { 
+            margin-top: 30px; padding: 20px; background-color: rgba(46, 125, 50, 0.1); 
+            border-left: 6px solid #2e7d32; border-radius: 4px; display: none; text-align: left; 
+        }
+        .result-box h3 { color: #2e7d32; margin-top: 0; font-size: 24px; }
+        .result-box p.amount { font-size: 32px; font-weight: bold; margin: 10px 0; color: #1b5e20; }
+        .info-text { font-size: 12px; color: var(--card-text-color); margin-top: 15px; display: block; }
+
+        /* --- 8. PORTFOLYO MATRİS STİLLERİ --- */
+        .portfolio-section { max-width: 1000px; margin: 50px auto; text-align: center; padding: 80px 20px 0; }
+        .filter-buttons { margin-bottom: 30px; }
+        .filter-btn { 
+            background-color: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); 
+            padding: 10px 20px; margin: 5px; border-radius: 20px; cursor: pointer; transition: 0.3s; font-weight: bold; 
+        }
+        .filter-btn.active, .filter-btn:hover { background-color: var(--primary-color); color: #fff; border-color: var(--primary-color); }
+        
+        .project-grid { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+        .project-card { 
+            width: 300px; background: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: 10px; box-shadow: 0 4px 8px var(--shadow-color); overflow: hidden; 
+            transition: transform 0.3s, opacity 0.4s, background-color 0.4s; 
+        }
+        .project-card.gizle { display: none; }
+        .project-img { width: 100%; height: 200px; background-color: #ddd; object-fit: cover; }
+        .project-info { padding: 15px; text-align: left; }
+        .project-info h4 { margin: 0 0 10px 0; }
+        .project-category { font-size: 12px; color: var(--primary-color); text-transform: uppercase; letter-spacing: 1px; font-weight: bold; }
+        .project-desc { font-size: 14px; color: var(--card-text-color); transition: color 0.4s; }
+        
+        /* --- 9. KURUMSAL FOOTER STİLLERİ --- */
+        .site-footer {
+            background-color: #1a1a1a; color: #f1f1f1; padding: 60px 20px 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin-top: 80px;
+        }
+        .footer-container {
+            max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px; border-bottom: 1px solid #333; padding-bottom: 40px;
+        }
+        .footer-col h3 {
+            color: var(--primary-color, #0056b3); font-size: 18px; margin-bottom: 20px;
+            position: relative; padding-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .footer-col h3::after {
+            content: ''; position: absolute; left: 0; bottom: 0; width: 40px; height: 2px;
+            background-color: var(--primary-color, #0056b3);
+        }
+        .footer-col p { font-size: 14px; line-height: 1.6; color: #bbb; }
+        .footer-links { list-style: none; padding: 0; margin: 0; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a { color: #bbb; text-decoration: none; font-size: 14px; transition: color 0.3s ease, padding-left 0.3s ease; }
+        .footer-links a:hover { color: var(--primary-color, #0056b3); padding-left: 5px; }
+        .footer-contact li { font-size: 14px; color: #bbb; margin-bottom: 15px; display: flex; align-items: flex-start; gap: 10px; }
+        .footer-bottom {
+            max-width: 1200px; margin: 0 auto; padding-top: 20px; text-align: center; font-size: 13px;
+            color: #777; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+        }
+        .footer-bottom a { color: #777; text-decoration: none; transition: color 0.3s;}
+        .footer-bottom a:hover { color: #f1f1f1; }
+    </style>
+</head>
+<body>
+
+    <nav class="pro-navbar">
+        <a href="/" class="nav-brand">⚡ ZAFER TECH</a>
+        
+        <ul class="nav-menu">
+            <li><a href="/">Ana Sayfa</a></li>
+            <li><a href="#hakkimizda">Kurumsal</a></li>
+            <li><a href="#hizmetler">Hizmetlerimiz</a></li> <li><a href="#projeler">Projelerimiz</a></li>
+            <li><a href="#iletisim">İletişim</a></li>
+        </ul>
+
+        <div class="nav-actions">
+            <div class="theme-switch-wrapper">
+                <span class="slider-text">Gece Modu</span>
+                <label class="theme-switch" for="checkbox">
+                    <input type="checkbox" id="checkbox" />
+                    <div class="slider round"></div>
+                </label>
+            </div>
+
+            {% if request.user.is_authenticated %}
+                <a href="{% url 'musteri_portali' %}" class="btn-b2b">B2B Portalınız ➔</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn-b2b">🔒 Müşteri Girişi</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <header class="hero-section">
+        <div class="hero-content">
+            <h1>İnsan ve Doğa Odaklı <br><span>Mühendislik Çözümleri</span></h1>
+            <p>Alanında uzman teknik kadromuz ile güvenilir, sürdürülebilir ve ekonomik enerji altyapıları inşa ediyoruz. Büyük ölçekli projelerinizin çözüm ortağıyız.</p>
+            <div class="hero-buttons">
+                <a href="#projeler" class="btn-primary">Projelerimizi İnceleyin</a>
+                <a href="{% url 'login' %}" class="btn-outline">Canlı Proje Takibi</a>
+            </div>
+        </div>
+    </header>
+    
+    <section class="about-section" id="hakkimizda">
+        <div class="about-text">
+            <h2>Hakkımızda</h2>
+            <p><strong>ZAFER TECH Elektrik Proje Taahhüt Tic. Ltd. Şti.</strong> olarak, 2023 yılında elektrik proje ve mühendislik, danışmanlık, elektrik taahhüt, enerji verimliliği ve yapı denetimi gibi birçok kritik alanda hizmet vermek üzere kurulduk.</p>
+            <p>Alanında uzman teknik kadromuz ile mühendislik esaslarına dayalı, doğru ve ekonomik çözümler üretiyoruz. Müşteri ihtiyaçlarını titizlikle analiz ederek optimum alternatifler sunmayı ve "çözüm ortağı" yaklaşımıyla projeleri başarıyla tamamlamayı hedefliyoruz.</p>
+            <p>Dinamik, yenilikçi ve teknolojiyi yakından takip eden yapımızla sektörde güvenilir ve sürdürülebilir bir iz bırakmaya devam ediyoruz.</p>
+        </div>
+
+        <div class="mv-cards">
+            <div class="mv-card">
+                <h3>🎯 Misyonumuz</h3>
+                <p>İnsan ve doğa odaklı mühendislik anlayışı ile doğru, ekonomik ve yüksek kaliteli çözümler üretmeyi görev edinmiş bulunmaktayız. Her projede çevreye duyarlı ve uzun ömürlü sistemler tasarlıyoruz.</p>
+            </div>
+
+            <div class="mv-card">
+                <h3>🔭 Vizyonumuz</h3>
+                <p>Projelerimizi söz verdiğimiz sürelerde tamamlamak, sektördeki teknolojik gelişmeleri yakından takip ederek en güncel ve verimli alternatifleri sunmak temel prensibimizdir. Büyük veya küçük ölçekli tüm ticari ve konut projelerde profesyonel mühendislik imzası bırakmak.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="services-section" id="hizmetler">
+        <h2>Uzmanlık Alanlarımız</h2>
+        
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">⚡</div>
+                <h3>Proje & Taahhüt</h3>
+                <p>Her türlü endüstriyel, ticari ve konut yapılarının elektrik altyapı projelerinin çizimi ve standartlara uygun anahtar teslim taahhüt süreçleri.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">📊</div>
+                <h3>SMM & Danışmanlık</h3>
+                <p>Serbest Müşavir Mühendislik hizmetleri kapsamında yasal prosedürlerin takibi, teknik müşavirlik ve projelerinize özel mühendislik danışmanlığı.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">🔋</div>
+                <h3>Enerji Verimliliği</h3>
+                <p>Tesislerinizdeki enerji tüketimini optimize ederek maliyetleri düşüren analizler, modernizasyon ve Enerji Kimlik Belgesi (EKB) tahsisi.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">🛠️</div>
+                <h3>Servis, Bakım & Ölçüm</h3>
+                <p>Mevcut sistemlerinizin periyodik bakımı, yasal topraklama ve pano ölçümleri ile beklenmedik durumlara karşı arıza tespit ve onarım hizmetleri.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">🔌</div>
+                <h3>Abonelik & Güç Artırımı</h3>
+                <p>Büyüyen tesislerinizin artan enerji ihtiyaçları doğrultusunda resmi kurumlarla yürütülen yasal güç artırımı ve yeni abonelik işlemleri.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">🏗️</div>
+                <h3>Yapı Denetim & Bilirkişilik</h3>
+                <p>Projelerin standartlara uygunluğunun sahada titizlikle denetlenmesi, teknik raporlama ve hukuki/teknik süreçlerde uzman bilirkişilik hizmetleri.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="calculator-container" id="hesaplayici">
+        <h2>LED Dönüşüm Tasarruf Hesaplayıcısı</h2>
+        <p>Tesisinizin mevcut aylık aydınlatma giderini girin, <strong>Zafer Tech</strong> sistemleriyle yıllık ne kadar tasarruf edeceğinizi anında öğrenin.</p>
+        
+        <div class="input-group">
+            <input type="number" id="aylikGider" placeholder="Örn: 25000 (Aylık TL Gideri)">
+        </div>
+
+        <button class="calc-btn" onclick="tasarrufHesapla()">Potansiyel Tasarrufumu Gör</button>
+
+        <div id="sonucAlani" class="result-box">
+            <h3>Yıllık Tasarruf Potansiyeliniz</h3>
+            <p class="amount" id="yillikTasarrufMiktari">0 TL</p>
+            <span class="info-text">*Bu hesaplama, güncel elektrik birim fiyatı (<span id="guncelFiyatEkran"></span> TL/kWh) ve ortalama %<span id="tasarrufOraniEkran"></span> verimlilik artışı baz alınarak yapılmıştır. Kesin teklif için bizimle iletişime geçin.</span>
+        </div>
+    </div>
+
+    <div class="portfolio-section" id="projeler">
+        <h2>Tamamlanan Projelerimiz</h2>
+        
+        <div style="text-align: right; margin-bottom: 15px;">
+            <button onclick="pdfKatalogOlustur()" style="background-color: #28a745; color: white; border: none; border-radius: 5px; width: auto; font-size: 14px; padding: 10px 20px; cursor: pointer; font-weight: bold; transition: background 0.3s;">
+                📑 Seçilenleri Özel PDF Yap
+            </button>
+        </div>
+        
+        <div class="filter-buttons">
+            <button class="filter-btn active" onclick="filtrele('hepsi')">Tümü</button>
+            {% for kategori in kategoriler %}
+                <button class="filter-btn" onclick="filtrele('{{ kategori.slug }}')">{{ kategori.ad }}</button>
+            {% endfor %}
+        </div>
+
+        <div class="project-grid" id="projeGrid">
+            {% for proje in projeler %}
+                <div class="project-card" data-kategori="{{ proje.kategori.slug }}">
+                    
+                    <a href="{% url 'proje_detay' proje.id %}" style="text-decoration: none; color: inherit; display: block;">
+                        <img src="{{ proje.gorsel_url|default:'https://via.placeholder.com/300x200?text=Proje+Gorseli' }}" alt="{{ proje.baslik }}" class="project-img">
+                        <div class="project-info" style="padding-bottom: 0;">
+                            <span class="project-category">{{ proje.kategori.ad }}</span>
+                            <h4 style="transition: color 0.3s;" onmouseover="this.style.color='#ff9800'" onmouseout="this.style.color='var(--primary-color)'">{{ proje.baslik }}</h4>
+                            <p class="project-desc">{{ proje.aciklama|truncatechars:60 }}</p>
+                        </div>
+                    </a>
+                    
+                    <div class="project-info" style="padding-top: 5px;">
+                        <label style="display: block; margin-top: 10px; font-size: 13px; color: var(--primary-color); cursor: pointer; font-weight: bold;">
+                            <input type="checkbox" class="pdf-secim" value="{{ proje.id }}"> ➕ Kataloğa Ekle
+                        </label>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <footer class="site-footer" id="iletisim">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>ZAFER TECH</h3>
+                <p>Alanında uzman teknik kadrosu ile mühendislik esaslarına dayalı, doğru ve ekonomik çözümler üretmektedir.</p>
+                <p>Dinamik, yenilikçi ve teknolojiyi yakından takip eden yapısıyla sektörde güvenilir ve sürdürülebilir çözümler sunar.</p>
+            </div>
+
+            <div class="footer-col">
+                <h3>Kurumsal</h3>
+                <ul class="footer-links">
+                    <li><a href="/">Ana Sayfa</a></li>
+                    <li><a href="#hakkimizda">Hakkımızda</a></li>
+                    <li><a href="#hakkimizda">Misyon & Vizyon</a></li>
+                    <li><a href="#projeler">Projeler</a></li>
+                    <li><a href="{% url 'login' %}">B2B Müşteri Portalı</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h3>İletişim</h3>
+                <ul class="footer-links footer-contact">
+                    <li>📍 <span>Müşteriden alınacak adres bilgisi buraya gelecek.<br>İstanbul, Türkiye</span></li>
+                    <li>📞 <span>+90 (XXX) XXX XX XX</span></li>
+                    <li>✉️ <span>info@zafertech.com</span></li>
+                    <li>🌐 <span>www.zafertech.com</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div>&copy; 2026 ZAFER TECH Elektrik Proje Taahhüt Tic. Ltd. Şti. Tüm Hakları Saklıdır.</div>
+            <div>
+                <a href="#">Gizlilik Politikası</a> | <a href="#">KVKK Aydınlatma Metni</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- 1. HESAPLAYICI MOTORU ---
+        const guncelFiyat = parseFloat("{{ hesaplayici_ayar.guncel_kwh_fiyati|escapejs }}");
+        const tasarrufOrani = parseInt("{{ hesaplayici_ayar.ortalama_tasarruf_orani|escapejs }}");
+
+        document.getElementById('guncelFiyatEkran').innerText = guncelFiyat;
+        document.getElementById('tasarrufOraniEkran').innerText = tasarrufOrani;
+
+        function tasarrufHesapla() {
+            const girilenTutar = document.getElementById('aylikGider').value;
+
+            if (!girilenTutar || girilenTutar <= 0) {
+                alert("Lütfen geçerli bir aylık gider tutarı giriniz.");
+                return;
+            }
+
+            const aylikTasarruf = (girilenTutar * tasarrufOrani) / 100;
+            const yillikTasarruf = aylikTasarruf * 12;
+
+            const formatliSonuc = new Intl.NumberFormat('tr-TR').format(yillikTasarruf) + " TL";
+
+            document.getElementById('yillikTasarrufMiktari').innerText = formatliSonuc;
+            document.getElementById('sonucAlani').style.display = 'block';
+        }
+
+        // --- 2. PORTFOLYO FİLTRELEME MOTORU ---
+        function filtrele(secilenKategori) {
+            const butonlar = document.querySelectorAll('.filter-btn');
+            butonlar.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const kartlar = document.querySelectorAll('.project-card');
+
+            kartlar.forEach(kart => {
+                const kartKategorisi = kart.getAttribute('data-kategori');
+                if (secilenKategori === 'hepsi' || kartKategorisi === secilenKategori) {
+                    kart.classList.remove('gizle');
+                } else {
+                    kart.classList.add('gizle');
+                }
+            });
+        }
+
+        // --- 3. GECE MODU (ŞALTER) MOTORU ---
+        const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+        const currentTheme = localStorage.getItem('theme');
+
+        if (currentTheme) {
+            document.body.classList.add(currentTheme);
+            if (currentTheme === 'dark-mode') {
+                toggleSwitch.checked = true;
+            }
+        }
+
+        function switchTheme(e) {
+            if (e.target.checked) {
+                document.body.classList.add('dark-mode');
+                localStorage.setItem('theme', 'dark-mode'); 
+            } else {
+                document.body.classList.remove('dark-mode');
+                localStorage.setItem('theme', 'light'); 
+            }
+        }
+
+        toggleSwitch.addEventListener('change', switchTheme, false);
+        
+        // --- 4. PDF OLUSTURMA MOTORU ---
+        function pdfKatalogOlustur() {
+            const secilenler = [];
+            
+            document.querySelectorAll('.pdf-secim:checked').forEach(checkbox => {
+                secilenler.push(checkbox.value);
+            });
+
+            if (secilenler.length === 0) {
+                alert('Lütfen PDF kataloğu oluşturmak için en az bir proje seçin.');
+                return;
+            }
+
+            const ids = secilenler.join(',');
+            window.location.href = '/pdf-indir/?ids=' + ids;
+        }
+    </script>
+</body>
+</html>
