@@ -1,12 +1,25 @@
 import os
 from django.conf import settings
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import EnerjiHesaplayiciAyar, Kategori, Proje
 from django.http import HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404
+
+
+# YENİ: Otomatik Türkçe Karakter Temizleyici Motor
+def clear_turkish_chars(text):
+    if not text:
+        return text
+    replacements = {
+        'ı': 'i', 'İ': 'I', 'ş': 's', 'Ş': 'S',
+        'ğ': 'g', 'Ğ': 'G', 'ü': 'u', 'Ü': 'U',
+        'ö': 'o', 'Ö': 'O', 'ç': 'c', 'Ç': 'C'
+    }
+    for tr, eng in replacements.items():
+        text = text.replace(tr, eng)
+    return text
 
 
 def ana_sayfa(request):
@@ -14,7 +27,6 @@ def ana_sayfa(request):
     if not hesaplayici_ayar:
         hesaplayici_ayar = EnerjiHesaplayiciAyar.objects.create(guncel_kwh_fiyati=2.50, ortalama_tasarruf_orani=60)
 
-    # Veritabanındaki tüm kategorileri ve projeleri çekiyoruz
     kategoriler = Kategori.objects.all()
     projeler = Proje.objects.all()
 
@@ -31,21 +43,27 @@ def pdf_olustur(request):
 
     if proje_id_listesi:
         ids = proje_id_listesi.split(',')
-        secilen_projeler = Proje.objects.filter(id__in=ids)
+        orijinal_projeler = Proje.objects.filter(id__in=ids)
+
+        # Veritabanından gelen yazıları PDF'e basmadan önce İngilizce karaktere çeviriyoruz
+        secilen_projeler = []
+        for p in orijinal_projeler:
+            p.baslik = clear_turkish_chars(p.baslik)
+            p.aciklama = clear_turkish_chars(p.aciklama)
+            if p.kategori:
+                p.kategori.ad = clear_turkish_chars(p.kategori.ad)
+            secilen_projeler.append(p)
     else:
         secilen_projeler = []
 
-    # Logo ve Font dosyasının tam yollarını belirliyoruz
-    logo_tam_yol = os.path.join(settings.BASE_DIR, 'core', 'static', 'core', 'images', 'logo.png')
-    font_tam_yol = os.path.join(settings.BASE_DIR, 'core', 'static', 'core', 'fonts', 'Roboto-Regular.ttf') # YENİ
+    logo_tam_yol = os.path.join(str(settings.BASE_DIR), 'core', 'static', 'core', 'images', 'logo.png').replace('\\',
+                                                                                                                '/')
 
     template = get_template('core/pdf_sablonu.html')
 
-    # font_yolu değişkenini de context içine ekliyoruz ki HTML bunu alabilsin
     context = {
         'projeler': secilen_projeler,
-        'logo_yolu': logo_tam_yol,
-        'font_yolu': font_tam_yol # YENİ
+        'logo_yolu': logo_tam_yol
     }
 
     html = template.render(context)
@@ -53,8 +71,8 @@ def pdf_olustur(request):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="Zafer_Tech_Ozel_Katalog.pdf"'
 
-    # YENİ: UTF-8 encoding belirterek Türkçe patlamasının önüne geçiyoruz
-    pisa_status = pisa.CreatePDF(html.encode("utf-8"), dest=response, encoding='utf-8')
+    # Encoding'e gerek kalmadı, varsayılan olarak çalışacak
+    pisa_status = pisa.CreatePDF(html, dest=response)
 
     if pisa_status.err:
         return HttpResponse('PDF oluşturulurken bir hata meydana geldi.')
@@ -63,10 +81,7 @@ def pdf_olustur(request):
 
 @login_required(login_url='/login/')
 def musteri_portali(request):
-    # Veritabanından, SADECE o an giriş yapmış olan kişiye (request.user) atanmış projeleri çekiyoruz.
-    # Başka müşterinin projesini kesinlikle göremez.
     musteri_projeleri = Proje.objects.filter(musteri=request.user)
-
     context = {
         'projeler': musteri_projeleri
     }
@@ -74,9 +89,7 @@ def musteri_portali(request):
 
 
 def proje_detay(request, proje_id):
-    # Tıklanan projeyi veritabanından buluyoruz, yoksa 404 hatası verir
     secilen_proje = get_object_or_404(Proje, id=proje_id)
-
     context = {
         'proje': secilen_proje
     }
