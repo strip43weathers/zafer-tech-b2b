@@ -1,9 +1,16 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zafer Tech | Elektrik Proje & Taahhüt</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         /* Yumuşak kaydırma (Smooth Scroll) eklendi */
@@ -16,9 +23,10 @@
             --bg-color: #f8f9fa;
             --text-color: #333333;
             --primary-color: #0056b3; 
+            --secondary-color: #00e5ff; /* Yeni vurgu rengi */
             --card-bg: #ffffff;
-            --border-color: #dddddd;
-            --shadow-color: rgba(0,0,0,0.1);
+            --border-color: #eaeaea; /* Daha yumuşak kenarlık */
+            --shadow-color: rgba(0,0,0,0.06); /* Çok daha yumuşak gölge */
             --card-text-color: #555555; 
         }
 
@@ -27,22 +35,34 @@
             --text-color: #e0e0e0;
             --primary-color: #00e5ff; 
             --card-bg: #1e1e1e;
-            --border-color: #333333;
-            --shadow-color: rgba(0, 229, 255, 0.2);
+            --border-color: #2a2a2a;
+            --shadow-color: rgba(0, 0, 0, 0.5);
             --card-text-color: #aaaaaa; 
         }
 
         /* --- 2. GENEL GÖRÜNÜM AYARLARI --- */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', sans-serif; /* Font güncellendi */
             background-color: var(--bg-color);
             color: var(--text-color);
             transition: background-color 0.4s ease, color 0.4s ease;
             margin: 0;
             padding: 0; 
+            line-height: 1.6;
         }
 
-        h2, h3, h4 { color: var(--primary-color); transition: color 0.4s ease; }
+        h1, h2, h3, h4 { color: var(--primary-color); transition: color 0.4s ease; font-weight: 700; }
+
+        /* Ortak Hover Efektleri (Kartlar İçin) */
+        .mv-card, .service-card, .project-card {
+            box-shadow: 0 10px 30px var(--shadow-color);
+            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
+        }
+        .mv-card:hover, .service-card:hover, .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 86, 179, 0.12); /* Hover anında markanın mavisi parlar */
+            border-color: rgba(0, 86, 179, 0.2);
+        }
 
         /* --- 3. PROFESYONEL NAVBAR STİLLERİ --- */
         .pro-navbar {
@@ -51,19 +71,19 @@
             z-index: 1000;
             background-color: var(--card-bg);
             border-bottom: 1px solid var(--border-color);
-            box-shadow: 0 4px 15px var(--shadow-color);
+            box-shadow: 0 4px 20px var(--shadow-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 5%;
+            padding: 35px 2%;
             transition: all 0.4s ease;
         }
         .nav-brand {
-            font-size: 26px;
+            font-size: 24px;
             font-weight: 800;
             color: var(--primary-color);
             text-decoration: none;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -78,7 +98,7 @@
         .nav-menu a {
             text-decoration: none;
             color: var(--text-color);
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -100,321 +120,314 @@
         
         .nav-actions { display: flex; align-items: center; gap: 20px; }
         .btn-b2b {
-            background: linear-gradient(90deg, #0056b3, #007bff);
+            background: linear-gradient(135deg, #0056b3, #004494);
             color: white !important;
             padding: 10px 25px;
             border-radius: 30px;
             text-decoration: none;
-            font-weight: bold;
+            font-weight: 600;
             font-size: 14px;
-            box-shadow: 0 4px 10px rgba(0, 86, 179, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 86, 179, 0.3);
             transition: transform 0.3s, box-shadow 0.3s;
         }
         .btn-b2b:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 86, 179, 0.5);
+            box-shadow: 0 6px 20px rgba(0, 86, 179, 0.5);
         }
 
         /* --- 4. ŞALTER (GECE MODU) STİLLERİ --- */
-        .theme-switch-wrapper {
-            display: flex;
-            align-items: center;
-        }
-        .theme-switch {
-            display: inline-block;
-            height: 30px;
-            position: relative;
-            width: 54px;
-        }
+        .theme-switch-wrapper { display: flex; align-items: center; }
+        .theme-switch { display: inline-block; height: 30px; position: relative; width: 54px; }
         .theme-switch input { display: none; }
-        .slider {
-            background-color: #ccc;
-            bottom: 0;
-            cursor: pointer;
-            left: 0;
-            position: absolute;
-            right: 0;
-            top: 0;
-            transition: .4s;
-            border-radius: 34px;
-        }
-        .slider:before {
-            background-color: #fff;
-            bottom: 3px;
-            content: "";
-            height: 24px;
-            left: 4px;
-            position: absolute;
-            transition: .4s;
-            width: 24px;
-            border-radius: 50%;
-        }
+        .slider { background-color: #ccc; bottom: 0; cursor: pointer; left: 0; position: absolute; right: 0; top: 0; transition: .4s; border-radius: 34px; }
+        .slider:before { background-color: #fff; bottom: 3px; content: ""; height: 24px; left: 4px; position: absolute; transition: .4s; width: 24px; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.2);}
         input:checked + .slider { background-color: var(--primary-color); }
         input:checked + .slider:before { transform: translateX(22px); }
-        .slider-text {
-            margin-right: 10px;
-            font-weight: bold;
-            font-size: 13px;
-            color: var(--text-color);
-            transition: color 0.4s ease;
-        }
+        .slider-text { margin-right: 10px; font-weight: 600; font-size: 13px; color: var(--text-color); transition: color 0.4s ease; }
 
-        /* --- 5. HERO (KARŞILAMA) ALANI STİLLERİ --- */
+        /* --- 5. YENİLENMİŞ HERO (KARŞILAMA) ALANI STİLLERİ --- */
         .hero-section {
             position: relative;
-            height: 70vh; 
-            min-height: 500px;
+            height: 75vh; 
+            min-height: 600px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            text-align: center;
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.6)), 
-                        url('https://images.unsplash.com/photo-1541888086225-eb1d81b40282?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.85) 20%, rgba(0, 0, 0, 0.4) 100%), 
+                        url('{% static "core/images/hero-arkaplan.jpg" %}') center/cover no-repeat;
             color: #ffffff;
+            padding: 0 10%; /* Sol taraftan boşluk */
         }
-        .hero-content { max-width: 900px; padding: 0 20px; z-index: 2; }
+        
+        .hero-content { 
+            max-width: 700px; 
+            z-index: 2; 
+            text-align: left; /* Sola dayalı modern görünüm */
+        }
         .hero-content h1 {
-            font-size: 52px; font-weight: 800; margin-bottom: 20px;
-            color: #ffffff; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); line-height: 1.2;
+            font-size: 56px; 
+            font-weight: 800; 
+            margin-bottom: 25px;
+            color: #ffffff; 
+            line-height: 1.15;
+            letter-spacing: -1px;
         }
-        .hero-content h1 span { color: #00e5ff; }
-        .hero-content p { font-size: 20px; margin-bottom: 40px; color: #e0e0e0; line-height: 1.6; }
-        .hero-buttons { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .hero-content h1 span { 
+            background: linear-gradient(to right, #00e5ff, #007bff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-content p { 
+            font-size: 18px; 
+            margin-bottom: 40px; 
+            color: #e0e0e0; 
+            line-height: 1.8; 
+            font-weight: 300;
+        }
+        .hero-buttons { display: flex; gap: 20px; flex-wrap: wrap; }
         .btn-primary {
-            background-color: var(--primary-color); color: white; padding: 15px 35px;
-            border-radius: 5px; text-decoration: none; font-size: 16px; font-weight: bold; transition: background 0.3s;
+            background: linear-gradient(135deg, #0056b3, #004494); color: white; padding: 16px 35px;
+            border-radius: 8px; text-decoration: none; font-size: 16px; font-weight: 600; 
+            transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 86, 179, 0.4);
         }
-        .btn-primary:hover { background-color: #004494; }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0, 86, 179, 0.6); }
         .btn-outline {
-            background-color: transparent; color: white; border: 2px solid white; padding: 15px 35px;
-            border-radius: 5px; text-decoration: none; font-size: 16px; font-weight: bold; transition: all 0.3s;
+            background-color: transparent; color: white; border: 2px solid rgba(255,255,255,0.5); padding: 16px 35px;
+            border-radius: 8px; text-decoration: none; font-size: 16px; font-weight: 600; transition: all 0.3s ease;
         }
-        .btn-outline:hover { background-color: white; color: #333; }
+        .btn-outline:hover { background-color: white; color: #111; border-color: white;}
         
         /* --- 5.5 KURUMSAL (HAKKIMIZDA / MİSYON / VİZYON) STİLLERİ --- */
         .about-section {
-            max-width: 1200px;
-            margin: 80px auto;
-            padding: 80px 20px 0; /* Menü kaymasını dengelemek için üst padding */
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 50px;
-            align-items: center;
+            max-width: 1200px; margin: 100px auto; padding: 0 20px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
         }
         .about-text h2 {
-            font-size: 32px;
-            margin-bottom: 20px;
-            color: var(--primary-color);
-            position: relative;
-            padding-bottom: 10px;
+            font-size: 36px; margin-bottom: 25px; color: var(--primary-color);
+            position: relative; padding-bottom: 10px;
         }
         .about-text h2::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 60px;
-            height: 3px;
-            background-color: var(--primary-color);
+            content: ''; position: absolute; left: 0; bottom: 0; width: 60px; height: 4px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color)); border-radius: 2px;
         }
-        .about-text p {
-            font-size: 16px;
-            line-height: 1.8;
-            color: var(--text-color);
-            margin-bottom: 15px;
-            text-align: justify;
-        }
-        .mv-cards {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
+        .about-text p { font-size: 16px; line-height: 1.8; color: var(--card-text-color); margin-bottom: 15px; }
+        
+        .mv-cards { display: flex; flex-direction: column; gap: 25px; }
         .mv-card {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 10px;
+            background: var(--card-bg); padding: 35px; border-radius: 16px;
             border-left: 5px solid var(--primary-color);
-            box-shadow: 0 4px 15px var(--shadow-color);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .mv-card:hover {
-            transform: translateX(10px); 
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-        }
-        .mv-card h3 {
-            margin: 0 0 15px 0;
-            font-size: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .mv-card p {
-            margin: 0;
-            font-size: 15px;
-            line-height: 1.6;
-            color: var(--card-text-color);
-        }
-        @media (max-width: 900px) {
-            .about-section { grid-template-columns: 1fr; gap: 30px; }
-        }
+        .mv-card h3 { margin: 0 0 15px 0; font-size: 20px; display: flex; align-items: center; gap: 12px; }
+        .mv-card h3 i { color: var(--primary-color); font-size: 24px; }
+        .mv-card p { margin: 0; font-size: 15px; line-height: 1.7; color: var(--card-text-color); }
+        @media (max-width: 900px) { .about-section { grid-template-columns: 1fr; gap: 40px; } }
         
         /* --- 6. HİZMETLERİMİZ STİLLERİ --- */
-        .services-section {
-            max-width: 1200px;
-            margin: 80px auto;
-            padding: 80px 20px 0; /* Menü kaymasını dengelemek için */
-            text-align: center;
-        }
+        .services-section { max-width: 1200px; margin: 100px auto; padding: 0 20px; text-align: center; }
         .services-section h2 {
-            font-size: 32px;
-            margin-bottom: 50px;
-            color: var(--primary-color);
-            position: relative;
-            display: inline-block;
-            padding-bottom: 10px;
+            font-size: 36px; margin-bottom: 60px; color: var(--primary-color);
+            position: relative; display: inline-block; padding-bottom: 10px;
         }
         .services-section h2::after {
-            content: '';
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            bottom: 0;
-            width: 60px;
-            height: 3px;
-            background-color: var(--primary-color);
+            content: ''; position: absolute; left: 50%; transform: translateX(-50%);
+            bottom: 0; width: 60px; height: 4px; background: linear-gradient(to right, var(--primary-color), var(--secondary-color)); border-radius: 2px;
         }
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
         .service-card {
-            background: var(--card-bg);
+            background: var(--card-bg); padding: 40px 30px; border-radius: 16px;
             border: 1px solid var(--border-color);
-            padding: 40px 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px var(--shadow-color);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
         }
-        .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-            border-color: var(--primary-color);
-        }
+        
+        /* Yenilenmiş İkon Stilleri */
         .service-icon {
-            font-size: 45px;
-            margin-bottom: 20px;
-            display: inline-block;
-            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
-            width: 80px;
-            height: 80px;
-            line-height: 80px;
-            border-radius: 50%;
+            font-size: 32px; color: var(--primary-color); margin-bottom: 25px; display: inline-block;
+            background: rgba(0, 86, 179, 0.08); width: 80px; height: 80px; line-height: 80px;
+            border-radius: 20px; transition: all 0.4s ease;
         }
-        .dark-mode .service-icon {
-            background: linear-gradient(135deg, #0d47a1, #1565c0);
+        .dark-mode .service-icon { background: rgba(0, 229, 255, 0.1); color: var(--secondary-color); }
+        .service-card:hover .service-icon {
+            background: var(--primary-color); color: white;
+            transform: scale(1.1) rotate(5deg);
         }
-        .service-card h3 {
-            font-size: 20px;
-            color: var(--text-color);
-            margin-bottom: 15px;
-        }
-        .service-card p {
-            font-size: 15px;
-            color: var(--card-text-color);
-            line-height: 1.6;
-            margin: 0;
-        }
+        
+        .service-card h3 { font-size: 22px; color: var(--text-color); margin-bottom: 15px; }
+        .service-card p { font-size: 15px; color: var(--card-text-color); line-height: 1.7; margin: 0; }
 
-        /* --- 7. HESAPLAYICI STİLLERİ --- */
-        .calculator-container { 
-            max-width: 600px; margin: 80px auto 50px auto; background: var(--card-bg); 
-            padding: 40px; border-radius: 12px; border: 1px solid var(--border-color);
-            box-shadow: 0 4px 15px var(--shadow-color); text-align: center; transition: all 0.4s ease;
+        /* --- 7. YENİ MODERN HESAPLAYICI STİLLERİ --- */
+        .calculator-section {
+            max-width: 1200px; margin: 100px auto; padding: 60px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 24px; color: #ffffff; display: grid;
+            grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+            box-shadow: 0 20px 40px rgba(0, 86, 179, 0.2);
         }
-        .input-group { margin: 20px 0; }
-        input[type="number"] { 
-            width: 80%; padding: 15px; font-size: 18px; border: 2px solid var(--border-color); 
-            border-radius: 8px; outline: none; background-color: var(--bg-color);
-            color: var(--text-color); transition: border-color 0.3s, background-color 0.4s, color 0.4s; 
+        .calc-info h2 { color: #ffffff; font-size: 36px; margin-top: 0; margin-bottom: 20px; }
+        .calc-info h2::after { display: none; } /* Başlığın altındaki varsayılan çizgiyi iptal ettik */
+        .calc-info p { font-size: 16px; line-height: 1.8; margin-bottom: 30px; opacity: 0.9; }
+        .calc-features { list-style: none; padding: 0; margin: 0; }
+        .calc-features li { margin-bottom: 15px; font-size: 15px; display: flex; align-items: center; gap: 12px; font-weight: 500;}
+        .calc-features i { color: #ffeb3b; font-size: 20px; }
+
+        .calc-box {
+            background: var(--card-bg); padding: 40px; border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15); color: var(--text-color);
         }
-        input[type="number"]:focus { border-color: var(--primary-color); }
+        .calc-box h3 { color: var(--primary-color); margin-top: 0; margin-bottom: 25px; font-size: 22px; }
+        .input-group { margin-bottom: 25px; position: relative; }
+        .input-group i { position: absolute; left: 18px; top: 19px; color: #999; font-size: 18px; }
+        
+        .calc-box input[type="number"] { 
+            width: 100%; box-sizing: border-box; padding: 16px 16px 16px 50px; 
+            font-size: 18px; border: 2px solid var(--border-color); 
+            border-radius: 10px; font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color); color: var(--text-color);
+            transition: all 0.3s;
+        }
+        .calc-box input[type="number"]:focus { border-color: var(--primary-color); box-shadow: 0 0 10px rgba(0, 86, 179, 0.1); outline: none;}
+        
         .calc-btn { 
-            background-color: var(--primary-color); color: white; border: none; padding: 15px 30px; 
-            font-size: 18px; border-radius: 8px; cursor: pointer; transition: background 0.3s; width: 85%; 
+            width: 100%; background: linear-gradient(135deg, #0056b3, #004494); 
+            color: white; border: none; padding: 18px; font-size: 16px; font-weight: 600; 
+            border-radius: 10px; cursor: pointer; transition: all 0.3s; 
+            display: flex; justify-content: center; align-items: center; gap: 10px;
         }
-        .calc-btn:hover { filter: brightness(0.9); }
+        .calc-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0, 86, 179, 0.3); }
         
         .result-box { 
-            margin-top: 30px; padding: 20px; background-color: rgba(46, 125, 50, 0.1); 
-            border-left: 6px solid #2e7d32; border-radius: 4px; display: none; text-align: left; 
+            margin-top: 30px; padding: 25px; background-color: rgba(46, 125, 50, 0.08); 
+            border-left: 6px solid #2e7d32; border-radius: 10px; display: none; text-align: left; 
         }
-        .result-box h3 { color: #2e7d32; margin-top: 0; font-size: 24px; }
-        .result-box p.amount { font-size: 32px; font-weight: bold; margin: 10px 0; color: #1b5e20; }
-        .info-text { font-size: 12px; color: var(--card-text-color); margin-top: 15px; display: block; }
+        .result-box h4 { color: #2e7d32; margin: 0 0 10px 0; font-size: 16px; text-transform: uppercase; letter-spacing: 1px;}
+        .result-box p.amount { font-size: 36px; font-weight: 800; margin: 0; color: #1b5e20; letter-spacing: -1px;}
+        .info-text { font-size: 13px; color: var(--card-text-color); margin-top: 15px; display: block; line-height: 1.5; }
+
+        @media (max-width: 900px) {
+            .calculator-section { grid-template-columns: 1fr; padding: 40px 20px; }
+        }
 
         /* --- 8. PORTFOLYO MATRİS STİLLERİ --- */
-        .portfolio-section { max-width: 1000px; margin: 50px auto; text-align: center; padding: 80px 20px 0; }
-        .filter-buttons { margin-bottom: 30px; }
+        .portfolio-section { max-width: 1200px; margin: 100px auto; text-align: center; padding: 0 20px; }
+        .portfolio-section h2 { font-size: 36px; margin-bottom: 20px; position: relative; display: inline-block; padding-bottom: 10px;}
+        .portfolio-section h2::after {
+            content: ''; position: absolute; left: 50%; transform: translateX(-50%);
+            bottom: 0; width: 60px; height: 4px; background: linear-gradient(to right, var(--primary-color), var(--secondary-color)); border-radius: 2px;
+        }
+
+        .filter-buttons { margin-bottom: 40px; margin-top: 30px;}
         .filter-btn { 
             background-color: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); 
-            padding: 10px 20px; margin: 5px; border-radius: 20px; cursor: pointer; transition: 0.3s; font-weight: bold; 
+            padding: 12px 25px; margin: 5px; border-radius: 30px; cursor: pointer; transition: 0.3s; font-weight: 500; font-family: 'Poppins', sans-serif;
         }
-        .filter-btn.active, .filter-btn:hover { background-color: var(--primary-color); color: #fff; border-color: var(--primary-color); }
+        .filter-btn.active, .filter-btn:hover { background-color: var(--primary-color); color: #fff; border-color: var(--primary-color); box-shadow: 0 5px 15px rgba(0, 86, 179, 0.2); }
         
-        .project-grid { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+        .project-grid { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; }
         .project-card { 
-            width: 300px; background: var(--card-bg); border: 1px solid var(--border-color);
-            border-radius: 10px; box-shadow: 0 4px 8px var(--shadow-color); overflow: hidden; 
-            transition: transform 0.3s, opacity 0.4s, background-color 0.4s; 
+            width: 350px; background: var(--card-bg); border-radius: 16px; overflow: hidden; 
         }
         .project-card.gizle { display: none; }
-        .project-img { width: 100%; height: 200px; background-color: #ddd; object-fit: cover; }
-        .project-info { padding: 15px; text-align: left; }
-        .project-info h4 { margin: 0 0 10px 0; }
-        .project-category { font-size: 12px; color: var(--primary-color); text-transform: uppercase; letter-spacing: 1px; font-weight: bold; }
-        .project-desc { font-size: 14px; color: var(--card-text-color); transition: color 0.4s; }
+        .project-img { width: 100%; height: 220px; background-color: #ddd; object-fit: cover; }
+        .project-info { padding: 20px; text-align: left; }
+        .project-info h4 { margin: 0 0 10px 0; font-size: 18px; }
+        .project-category { font-size: 12px; color: var(--primary-color); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; display: block; margin-bottom: 5px;}
+        .project-desc { font-size: 14px; color: var(--card-text-color); line-height: 1.6; }
+
+        /* --- 8.5 REFERANSLAR (KAYAN LOGO ŞERİDİ) STİLLERİ --- */
+        .references-section {
+            max-width: 1200px; margin: 80px auto; text-align: center; padding: 0 20px;
+        }
+        .references-section h2 {
+            font-size: 36px; margin-bottom: 40px; color: var(--primary-color);
+            position: relative; display: inline-block; padding-bottom: 10px;
+        }
+        .references-section h2::after {
+            content: ''; position: absolute; left: 50%; transform: translateX(-50%);
+            bottom: 0; width: 60px; height: 4px; background: linear-gradient(to right, var(--primary-color), var(--secondary-color)); border-radius: 2px;
+        }
+        
+        .marquee-container {
+            width: 100%; overflow: hidden; white-space: nowrap; position: relative; padding: 20px 0;
+            /* Ekranın sağ ve sol kenarlarına doğru logoların yumuşakça silinme efekti */
+            webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        }
+        
+        .marquee-track {
+            display: inline-flex; gap: 60px; align-items: center;
+            /* 30 saniyede bir tur atacak şekilde sonsuz döngü animasyonu */
+            animation: scroll-left 30s linear infinite; 
+        }
+        
+        /* Kullanıcı şeridin üzerine gelince kayma dursun isterseniz: */
+        .marquee-container:hover .marquee-track {
+            animation-play-state: paused; 
+        }
+        
+        .reference-logo {
+            height: 90px; /* Yüksekliği 60px'ten 90px'e çıkardık */
+            width: auto; 
+            max-width: 250px; /* Geniş logoların küçülmemesi için sınırı genişlettik */
+            object-fit: contain;
+            transition: all 0.4s ease; cursor: default;
+            
+            /* BEYAZ ARKA PLANI SİTENİN ZEMİNİNE ERİTME HİLESİ */
+            mix-blend-mode: multiply; 
+        }
+        
+        /* Fare üzerine gelince sadece çok hafif büyüsün */
+        .reference-logo:hover {
+            transform: scale(1.05);
+        }
+
+        /* Kaydırma Animasyonu Motoru */
+        @keyframes scroll-left {
+            0% { transform: translateX(0); }
+            /* İçerik iki katına çıkarıldığı için tam ortadan başa sarar, böylece kesinti olmaz */
+            100% { transform: translateX(-50%); } 
+        }
         
         /* --- 9. KURUMSAL FOOTER STİLLERİ --- */
         .site-footer {
-            background-color: #1a1a1a; color: #f1f1f1; padding: 60px 20px 20px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin-top: 80px;
+            background-color: #111111; color: #f1f1f1; padding: 80px 20px 20px; margin-top: 100px;
         }
         .footer-container {
             max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px; border-bottom: 1px solid #333; padding-bottom: 40px;
+            gap: 50px; border-bottom: 1px solid #333; padding-bottom: 50px;
         }
         .footer-col h3 {
-            color: var(--primary-color, #0056b3); font-size: 18px; margin-bottom: 20px;
+            color: var(--secondary-color); font-size: 18px; margin-bottom: 25px;
             position: relative; padding-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;
         }
         .footer-col h3::after {
-            content: ''; position: absolute; left: 0; bottom: 0; width: 40px; height: 2px;
-            background-color: var(--primary-color, #0056b3);
+            content: ''; position: absolute; left: 0; bottom: 0; width: 40px; height: 3px; background-color: var(--secondary-color);
         }
-        .footer-col p { font-size: 14px; line-height: 1.6; color: #bbb; }
+        .footer-col p { font-size: 14px; line-height: 1.8; color: #999; }
         .footer-links { list-style: none; padding: 0; margin: 0; }
-        .footer-links li { margin-bottom: 12px; }
-        .footer-links a { color: #bbb; text-decoration: none; font-size: 14px; transition: color 0.3s ease, padding-left 0.3s ease; }
-        .footer-links a:hover { color: var(--primary-color, #0056b3); padding-left: 5px; }
-        .footer-contact li { font-size: 14px; color: #bbb; margin-bottom: 15px; display: flex; align-items: flex-start; gap: 10px; }
+        .footer-links li { margin-bottom: 15px; }
+        .footer-links a { color: #999; text-decoration: none; font-size: 14px; transition: all 0.3s ease; display: inline-block;}
+        .footer-links a:hover { color: #fff; transform: translateX(5px); }
+        .footer-contact li { font-size: 14px; color: #999; margin-bottom: 15px; display: flex; align-items: flex-start; gap: 15px; }
+        .footer-contact i { color: var(--secondary-color); font-size: 18px; margin-top: 3px;}
+        
         .footer-bottom {
-            max-width: 1200px; margin: 0 auto; padding-top: 20px; text-align: center; font-size: 13px;
-            color: #777; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+            max-width: 1200px; margin: 0 auto; padding-top: 25px; text-align: center; font-size: 13px;
+            color: #666; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
         }
-        .footer-bottom a { color: #777; text-decoration: none; transition: color 0.3s;}
-        .footer-bottom a:hover { color: #f1f1f1; }
+        .footer-bottom a { color: #666; text-decoration: none; transition: color 0.3s;}
+        .footer-bottom a:hover { color: #fff; }
     </style>
 </head>
 <body>
 
     <nav class="pro-navbar">
-        <a href="/" class="nav-brand">⚡ ZAFER TECH</a>
+        <a href="/" class="nav-brand">
+            <img src="{% static 'core/images/logo.png' %}" alt="Zafer Tech Logo" style="height: 60px; width: auto;"> ZAFER TECH
+        </a>
         
         <ul class="nav-menu">
             <li><a href="/">Ana Sayfa</a></li>
             <li><a href="#hakkimizda">Kurumsal</a></li>
-            <li><a href="#hizmetler">Hizmetlerimiz</a></li> <li><a href="#projeler">Projelerimiz</a></li>
+            <li><a href="#hizmetler">Hizmetlerimiz</a></li> 
+            <li><a href="#projeler">Projelerimiz</a></li>
+            <li><a href="#referanslar">Referanslar</a></li>
             <li><a href="#iletisim">İletişim</a></li>
         </ul>
 
@@ -428,9 +441,9 @@
             </div>
 
             {% if request.user.is_authenticated %}
-                <a href="{% url 'musteri_portali' %}" class="btn-b2b">B2B Portalınız ➔</a>
+                <a href="{% url 'musteri_portali' %}" class="btn-b2b">B2B Portalınız <i class="fa-solid fa-arrow-right" style="margin-left:5px;"></i></a>
             {% else %}
-                <a href="{% url 'login' %}" class="btn-b2b">🔒 Müşteri Girişi</a>
+                <a href="{% url 'login' %}" class="btn-b2b"><i class="fa-solid fa-lock" style="margin-right:5px;"></i> Müşteri Girişi</a>
             {% endif %}
         </div>
     </nav>
@@ -438,7 +451,7 @@
     <header class="hero-section">
         <div class="hero-content">
             <h1>İnsan ve Doğa Odaklı <br><span>Mühendislik Çözümleri</span></h1>
-            <p>Alanında uzman teknik kadromuz ile güvenilir, sürdürülebilir ve ekonomik enerji altyapıları inşa ediyoruz. Büyük ölçekli projelerinizin çözüm ortağıyız.</p>
+            <p>Alanında uzman teknik kadromuz ile güvenilir, sürdürülebilir ve ekonomik enerji altyapıları inşa ediyoruz. Büyük ölçekli projelerinizin mühendislik çözüm ortağıyız.</p>
             <div class="hero-buttons">
                 <a href="#projeler" class="btn-primary">Projelerimizi İnceleyin</a>
                 <a href="{% url 'login' %}" class="btn-outline">Canlı Proje Takibi</a>
@@ -456,84 +469,98 @@
 
         <div class="mv-cards">
             <div class="mv-card">
-                <h3>🎯 Misyonumuz</h3>
+                <h3><i class="fa-solid fa-bullseye"></i> Misyonumuz</h3>
                 <p>İnsan ve doğa odaklı mühendislik anlayışı ile doğru, ekonomik ve yüksek kaliteli çözümler üretmeyi görev edinmiş bulunmaktayız. Her projede çevreye duyarlı ve uzun ömürlü sistemler tasarlıyoruz.</p>
             </div>
 
             <div class="mv-card">
-                <h3>🔭 Vizyonumuz</h3>
-                <p>Projelerimizi söz verdiğimiz sürelerde tamamlamak, sektördeki teknolojik gelişmeleri yakından takip ederek en güncel ve verimli alternatifleri sunmak temel prensibimizdir. Büyük veya küçük ölçekli tüm ticari ve konut projelerde profesyonel mühendislik imzası bırakmak.</p>
+                <h3><i class="fa-solid fa-telescope"></i> Vizyonumuz</h3>
+                <p>Projelerimizi söz verdiğimiz sürelerde tamamlamak, sektördeki teknolojik gelişmeleri yakından takip ederek en güncel ve verimli alternatifleri sunmak temel prensibimizdir. Tüm projelerde profesyonel imza bırakmak.</p>
             </div>
         </div>
     </section>
 
     <section class="services-section" id="hizmetler">
-        <h2>Uzmanlık Alanlarımız</h2>
-        
-        <div class="services-grid">
-            <div class="service-card">
-                <div class="service-icon">⚡</div>
-                <h3>Proje & Taahhüt</h3>
-                <p>Her türlü endüstriyel, ticari ve konut yapılarının elektrik altyapı projelerinin çizimi ve standartlara uygun anahtar teslim taahhüt süreçleri.</p>
-            </div>
-            
-            <div class="service-card">
-                <div class="service-icon">📊</div>
-                <h3>SMM & Danışmanlık</h3>
-                <p>Serbest Müşavir Mühendislik hizmetleri kapsamında yasal prosedürlerin takibi, teknik müşavirlik ve projelerinize özel mühendislik danışmanlığı.</p>
-            </div>
-            
-            <div class="service-card">
-                <div class="service-icon">🔋</div>
-                <h3>Enerji Verimliliği</h3>
-                <p>Tesislerinizdeki enerji tüketimini optimize ederek maliyetleri düşüren analizler, modernizasyon ve Enerji Kimlik Belgesi (EKB) tahsisi.</p>
-            </div>
-            
-            <div class="service-card">
-                <div class="service-icon">🛠️</div>
-                <h3>Servis, Bakım & Ölçüm</h3>
-                <p>Mevcut sistemlerinizin periyodik bakımı, yasal topraklama ve pano ölçümleri ile beklenmedik durumlara karşı arıza tespit ve onarım hizmetleri.</p>
-            </div>
-            
-            <div class="service-card">
-                <div class="service-icon">🔌</div>
-                <h3>Abonelik & Güç Artırımı</h3>
-                <p>Büyüyen tesislerinizin artan enerji ihtiyaçları doğrultusunda resmi kurumlarla yürütülen yasal güç artırımı ve yeni abonelik işlemleri.</p>
-            </div>
-            
-            <div class="service-card">
-                <div class="service-icon">🏗️</div>
-                <h3>Yapı Denetim & Bilirkişilik</h3>
-                <p>Projelerin standartlara uygunluğunun sahada titizlikle denetlenmesi, teknik raporlama ve hukuki/teknik süreçlerde uzman bilirkişilik hizmetleri.</p>
-            </div>
+    <h2>Uzmanlık Alanlarımız</h2>
+    
+    <div class="services-grid">
+        <div class="service-card">
+            <div class="service-icon"><i class="fa-solid fa-bolt-lightning"></i></div>
+            <h3>Proje & Taahhüt</h3>
+            <p>Her türlü endüstriyel, ticari ve konut yapılarının elektrik altyapı projelerinin çizimi ve standartlara uygun anahtar teslim taahhüt süreçleri.</p>
         </div>
-    </section>
+        
+        <div class="service-card">
+            <div class="service-icon"><i class="fa-solid fa-chart-line"></i></div>
+            <h3>SMM & Danışmanlık</h3>
+            <p>Serbest Müşavir Mühendislik hizmetleri kapsamında yasal prosedürlerin takibi, teknik müşavirlik ve projelerinize özel mühendislik danışmanlığı.</p>
+        </div>
+        
+        <div class="service-card">
+            <div class="service-icon"><i class="fa-solid fa-leaf"></i></div>
+            <h3>Enerji Verimliliği</h3>
+            <p>Tesislerinizdeki enerji tüketimini optimize ederek maliyetleri düşüren analizler, modernizasyon ve Enerji Kimlik Belgesi (EKB) tahsisi.</p>
+        </div>
+        
+        <div class="service-card">
+            <div class="service-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+            <h3>Servis, Bakım & Ölçüm</h3>
+            <p>Mevcut sistemlerinizin periyodik bakımı, yasal topraklama ve pano ölçümleri ile beklenmedik durumlara karşı arıza tespit ve onarım hizmetleri.</p>
+        </div>
+        
+        <div class="service-card">
+            <div class="service-icon"><i class="fa-solid fa-plug-circle-plus"></i></div>
+            <h3>Abonelik & Güç Artırımı</h3>
+            <p>Büyüyen tesislerinizin artan enerji ihtiyaçları doğrultusunda resmi kurumlarla yürütülen yasal güç artırımı ve yeni abonelik işlemleri.</p>
+        </div>
+        
+        <div class="service-card">
+            <div class="service-icon"><i class="fa-solid fa-hard-hat"></i></div>
+            <h3>Yapı Denetim & Bilirkişilik</h3>
+            <p>Projelerin standartlara uygunluğunun sahada titizlikle denetlenmesi, teknik raporlama ve hukuki/teknik süreçlerde uzman bilirkişilik hizmetleri.</p>
+        </div>
+    </div>
+</section>
 
-    <div class="calculator-container" id="hesaplayici">
+<section class="calculator-section" id="hesaplayici">
+    
+    <div class="calc-info">
         <h2>LED Dönüşüm Tasarruf Hesaplayıcısı</h2>
-        <p>Tesisinizin mevcut aylık aydınlatma giderini girin, <strong>Zafer Tech</strong> sistemleriyle yıllık ne kadar tasarruf edeceğinizi anında öğrenin.</p>
-        
+        <p>Tesisinizin mevcut aylık aydınlatma giderini girin, <strong>Zafer Tech</strong> sistemleriyle yıllık ne kadar tasarruf edeceğinizi anında öğrenin. Doğru mühendislik ile maliyetlerinizi düşürmek sizin elinizde.</p>
+        <ul class="calc-features">
+            <li><i class="fa-solid fa-check-circle"></i> Çevre dostu ve uzun ömürlü sistemler</li>
+            <li><i class="fa-solid fa-check-circle"></i> Minimum arıza ve bakım maliyeti</li>
+            <li><i class="fa-solid fa-check-circle"></i> 1-2 yıl içinde kendi kendini amorti eden yatırım</li>
+        </ul>
+    </div>
+    
+    <div class="calc-box">
+        <h3>Aylık Giderinizi Girin</h3>
         <div class="input-group">
-            <input type="number" id="aylikGider" placeholder="Örn: 25000 (Aylık TL Gideri)">
+            <i class="fa-solid fa-turkish-lira-sign"></i>
+            <input type="number" id="aylikGider" placeholder="Örn: 25000">
         </div>
 
-        <button class="calc-btn" onclick="tasarrufHesapla()">Potansiyel Tasarrufumu Gör</button>
+        <button class="calc-btn" onclick="tasarrufHesapla()">
+            <i class="fa-solid fa-calculator"></i> Potansiyel Tasarrufumu Gör
+        </button>
 
         <div id="sonucAlani" class="result-box">
-            <h3>Yıllık Tasarruf Potansiyeliniz</h3>
+            <h4>Yıllık Tasarruf Potansiyeliniz</h4>
             <p class="amount" id="yillikTasarrufMiktari">0 TL</p>
             <span class="info-text">*Bu hesaplama, güncel elektrik birim fiyatı (<span id="guncelFiyatEkran"></span> TL/kWh) ve ortalama %<span id="tasarrufOraniEkran"></span> verimlilik artışı baz alınarak yapılmıştır. Kesin teklif için bizimle iletişime geçin.</span>
         </div>
     </div>
 
-    <div class="portfolio-section" id="projeler">
-        <h2>Tamamlanan Projelerimiz</h2>
-        
-        <div style="text-align: right; margin-bottom: 15px;">
-            <button onclick="pdfKatalogOlustur()" style="background-color: #28a745; color: white; border: none; border-radius: 5px; width: auto; font-size: 14px; padding: 10px 20px; cursor: pointer; font-weight: bold; transition: background 0.3s;">
-                📑 Seçilenleri Özel PDF Yap
-            </button>
-        </div>
+</section>
+<div class="portfolio-section" id="projeler">
+    
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+        <h2 style="margin: 0;">Tamamlanan Projelerimiz</h2>
+        <button onclick="pdfKatalogOlustur()" style="background: linear-gradient(135deg, #28a745, #208737); color: white; border: none; border-radius: 8px; width: auto; font-size: 14px; padding: 12px 24px; cursor: pointer; font-weight: 600; transition: transform 0.3s, box-shadow 0.3s; box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);">
+            <i class="fa-solid fa-file-pdf" style="margin-right: 5px;"></i> Seçilenleri Özel PDF Yap
+        </button>
+    </div>
         
         <div class="filter-buttons">
             <button class="filter-btn active" onclick="filtrele('hepsi')">Tümü</button>
@@ -547,17 +574,18 @@
                 <div class="project-card" data-kategori="{{ proje.kategori.slug }}">
                     
                     <a href="{% url 'proje_detay' proje.id %}" style="text-decoration: none; color: inherit; display: block;">
-                        <img src="{{ proje.gorsel_url|default:'https://via.placeholder.com/300x200?text=Proje+Gorseli' }}" alt="{{ proje.baslik }}" class="project-img">
+                        <img src="{{ proje.gorsel_url|default:'https://via.placeholder.com/400x300?text=Proje+Gorseli' }}" alt="{{ proje.baslik }}" class="project-img">
                         <div class="project-info" style="padding-bottom: 0;">
                             <span class="project-category">{{ proje.kategori.ad }}</span>
-                            <h4 style="transition: color 0.3s;" onmouseover="this.style.color='#ff9800'" onmouseout="this.style.color='var(--primary-color)'">{{ proje.baslik }}</h4>
+                            <h4 style="transition: color 0.3s;" onmouseover="this.style.color='var(--secondary-color)'" onmouseout="this.style.color='var(--primary-color)'">{{ proje.baslik }}</h4>
                             <p class="project-desc">{{ proje.aciklama|truncatechars:60 }}</p>
                         </div>
                     </a>
                     
-                    <div class="project-info" style="padding-top: 5px;">
-                        <label style="display: block; margin-top: 10px; font-size: 13px; color: var(--primary-color); cursor: pointer; font-weight: bold;">
-                            <input type="checkbox" class="pdf-secim" value="{{ proje.id }}"> ➕ Kataloğa Ekle
+                    <div class="project-info" style="padding-top: 10px; border-top: 1px solid var(--border-color); margin-top: 15px;">
+                        <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--primary-color); cursor: pointer; font-weight: 600;">
+                            <input type="checkbox" class="pdf-secim" value="{{ proje.id }}" style="cursor: pointer; width: 16px; height: 16px;"> 
+                            Kataloğa Ekle
                         </label>
                     </div>
                 </div>
@@ -565,10 +593,31 @@
         </div>
     </div>
 
+    <section class="references-section" id="referanslar">
+        <h2>Referanslarımız</h2>
+        
+        <div class="marquee-container">
+            <div class="marquee-track">
+                <img src="{% static 'core/images/referanslar/aslan.png' %}" alt="Aslan" class="reference-logo">
+                <img src="{% static 'core/images/referanslar/at.png' %}" alt="At" class="reference-logo">
+                <img src="{% static 'core/images/referanslar/kedi.png' %}" alt="Kedi" class="reference-logo">
+                <img src="{% static 'core/images/referanslar/konum.png' %}" alt="Konum" class="reference-logo">
+                <img src="{% static 'core/images/referanslar/dag.png' %}" alt="Dağ" class="reference-logo">
+                <img src="{% static 'core/images/referanslar/su.png' %}" alt="Su" class="reference-logo">
+                
+                <img src="{% static 'core/images/referanslar/aslan.png' %}" alt="Aslan" class="reference-logo">
+                <img src="{% static 'core/images/referanslar/at.png' %}" alt="At" class="reference-logo">
+                <img src="{% static 'core/images/referanslar/kedi.png' %}" alt="Kedi" class="reference-logo">
+                <img src="{% static 'core/images/referanslar/konum.png' %}" alt="Konum" class="reference-logo">
+                <img src="{% static 'core/images/referanslar/dag.png' %}" alt="Dağ" class="reference-logo">
+                <img src="{% static 'core/images/referanslar/su.png' %}" alt="Su" class="reference-logo">
+            </div>
+        </div>
+    </section>
     <footer class="site-footer" id="iletisim">
         <div class="footer-container">
             <div class="footer-col">
-                <h3>ZAFER TECH</h3>
+                <h3><i class="fa-solid fa-bolt"></i> ZAFER TECH</h3>
                 <p>Alanında uzman teknik kadrosu ile mühendislik esaslarına dayalı, doğru ve ekonomik çözümler üretmektedir.</p>
                 <p>Dinamik, yenilikçi ve teknolojiyi yakından takip eden yapısıyla sektörde güvenilir ve sürdürülebilir çözümler sunar.</p>
             </div>
@@ -576,21 +625,21 @@
             <div class="footer-col">
                 <h3>Kurumsal</h3>
                 <ul class="footer-links">
-                    <li><a href="/">Ana Sayfa</a></li>
-                    <li><a href="#hakkimizda">Hakkımızda</a></li>
-                    <li><a href="#hakkimizda">Misyon & Vizyon</a></li>
-                    <li><a href="#projeler">Projeler</a></li>
-                    <li><a href="{% url 'login' %}">B2B Müşteri Portalı</a></li>
+                    <li><a href="/"><i class="fa-solid fa-angle-right" style="font-size: 10px; margin-right: 5px;"></i> Ana Sayfa</a></li>
+                    <li><a href="#hakkimizda"><i class="fa-solid fa-angle-right" style="font-size: 10px; margin-right: 5px;"></i> Hakkımızda</a></li>
+                    <li><a href="#hakkimizda"><i class="fa-solid fa-angle-right" style="font-size: 10px; margin-right: 5px;"></i> Misyon & Vizyon</a></li>
+                    <li><a href="#projeler"><i class="fa-solid fa-angle-right" style="font-size: 10px; margin-right: 5px;"></i> Projeler</a></li>
+                    <li><a href="{% url 'login' %}"><i class="fa-solid fa-angle-right" style="font-size: 10px; margin-right: 5px;"></i> B2B Müşteri Portalı</a></li>
                 </ul>
             </div>
 
             <div class="footer-col">
                 <h3>İletişim</h3>
                 <ul class="footer-links footer-contact">
-                    <li>📍 <span>Müşteriden alınacak adres bilgisi buraya gelecek.<br>İstanbul, Türkiye</span></li>
-                    <li>📞 <span>+90 (XXX) XXX XX XX</span></li>
-                    <li>✉️ <span>info@zafertech.com</span></li>
-                    <li>🌐 <span>www.zafertech.com</span></li>
+                    <li><i class="fa-solid fa-location-dot"></i> <span>Müşteriden alınacak adres bilgisi buraya gelecek.<br>İstanbul, Türkiye</span></li>
+                    <li><i class="fa-solid fa-phone"></i> <span>+90 (XXX) XXX XX XX</span></li>
+                    <li><i class="fa-solid fa-envelope"></i> <span>info@zafertech.com</span></li>
+                    <li><i class="fa-solid fa-globe"></i> <span>www.zafertech.com</span></li>
                 </ul>
             </div>
         </div>
@@ -598,7 +647,7 @@
         <div class="footer-bottom">
             <div>&copy; 2026 ZAFER TECH Elektrik Proje Taahhüt Tic. Ltd. Şti. Tüm Hakları Saklıdır.</div>
             <div>
-                <a href="#">Gizlilik Politikası</a> | <a href="#">KVKK Aydınlatma Metni</a>
+                <a href="#">Gizlilik Politikası</a> &nbsp;|&nbsp; <a href="#">KVKK Aydınlatma Metni</a>
             </div>
         </div>
     </footer>

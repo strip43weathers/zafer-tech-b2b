@@ -2,81 +2,336 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Zafer Tech | Proje Takip Ekranı</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zafer Tech | B2B Proje Takip Paneli</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background-color: #f0f2f5; margin: 0; padding: 0; color: #333; }
-        .navbar { background-color: #0056b3; color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .navbar a { color: #ffeb3b; text-decoration: none; font-weight: bold; font-size: 14px; border: 1px solid #ffeb3b; padding: 5px 15px; border-radius: 20px;}
-        
-        .container { max-width: 900px; margin: 40px auto; padding: 20px; }
-        .project-card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); margin-bottom: 30px; border-left: 5px solid #0056b3; }
-        
-        .project-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 20px;}
-        .project-header h3 { margin: 0; color: #0056b3; font-size: 22px; }
-        .category-badge { background: #e3f2fd; color: #0d47a1; padding: 5px 10px; border-radius: 5px; font-size: 12px; font-weight: bold;}
-        
-        /* Dinamik İlerleme Çubuğu (Progress Bar) Stilleri */
-        .progress-container { width: 100%; background-color: #e0e0e0; border-radius: 10px; height: 25px; margin: 20px 0; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.2); }
-        .progress-bar { 
-            height: 100%; 
-            background: linear-gradient(90deg, #0056b3, #00e5ff); 
-            text-align: right; 
-            line-height: 25px; 
-            color: white; 
-            font-weight: bold; 
-            border-radius: 10px; 
-            transition: width 1.5s ease-in-out; /* Dolma animasyonu */
+        :root {
+            --primary-color: #0056b3;
+            --secondary-color: #00e5ff;
+            --bg-color: #f4f7f9; /* Dashboard tarzı uçuk gri/mavi arka plan */
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --text-muted: #777777;
+            --border-color: #eef1f5;
+            --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.04);
         }
-        .progress-text { padding-right: 10px; font-size: 12px;}
+
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: var(--bg-color); 
+            margin: 0; 
+            padding: 0; 
+            color: var(--text-color); 
+            line-height: 1.6;
+        }
+
+        /* --- 1. UYGULAMA ÜST MENÜSÜ (APP BAR) --- */
+        .app-navbar { 
+            background: linear-gradient(135deg, #0056b3, #004494); 
+            color: white; 
+            padding: 15px 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            box-shadow: 0 4px 15px rgba(0, 86, 179, 0.2); 
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .app-brand {
+            font-size: 20px; 
+            font-weight: 700; 
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .app-brand i { color: var(--secondary-color); }
         
-        .status-note { background: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; color: #555; font-size: 14px; border-radius: 4px;}
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        .greeting {
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #e0e0e0;
+        }
+        .btn-logout { 
+            color: #111; 
+            background-color: white;
+            text-decoration: none; 
+            font-weight: 600; 
+            font-size: 13px; 
+            padding: 8px 20px; 
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .btn-logout:hover {
+            background-color: #ffeb3b;
+            transform: translateY(-2px);
+        }
+
+        /* --- 2. ANA İÇERİK (DASHBOARD) --- */
+        .dashboard-container { 
+            max-width: 1000px; 
+            margin: 50px auto; 
+            padding: 0 20px; 
+        }
+        .dashboard-header {
+            margin-bottom: 40px;
+        }
+        .dashboard-header h2 {
+            color: #111;
+            font-weight: 700;
+            font-size: 28px;
+            margin: 0 0 10px 0;
+        }
+        .dashboard-header p {
+            color: var(--text-muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        /* --- 3. PROJE KARTLARI --- */
+        .project-card { 
+            background: var(--card-bg); 
+            padding: 35px; 
+            border-radius: 16px; 
+            box-shadow: var(--shadow-soft); 
+            margin-bottom: 40px; 
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .project-card:hover { transform: translateY(-3px); }
+        
+        /* Kartın üstündeki ince mavi şerit */
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+        }
+        
+        .project-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-start; 
+            border-bottom: 1px solid var(--border-color); 
+            padding-bottom: 20px; 
+            margin-bottom: 25px;
+        }
+        .project-title-area h3 { 
+            margin: 0 0 8px 0; 
+            color: var(--primary-color); 
+            font-size: 24px; 
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .category-badge { 
+            background: rgba(0, 86, 179, 0.08); 
+            color: var(--primary-color); 
+            padding: 6px 15px; 
+            border-radius: 30px; 
+            font-size: 12px; 
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .percentage-badge {
+            font-size: 28px;
+            font-weight: 800;
+            color: #111;
+        }
+        .percentage-badge span { font-size: 14px; color: var(--text-muted); font-weight: 500; display: block; text-align: right;}
+
+        /* --- 4. İLERLEME ÇUBUĞU (PROGRESS BAR) --- */
+        .progress-section { margin-bottom: 30px; }
+        .section-label { 
+            font-weight: 600; 
+            margin-bottom: 10px; 
+            color: #444; 
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-label i { color: var(--primary-color); }
+        
+        .progress-track { 
+            width: 100%; 
+            background-color: #edf2f7; 
+            border-radius: 20px; 
+            height: 16px; 
+            overflow: hidden; 
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05); 
+        }
+        .progress-fill { 
+            height: 100%; 
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); 
+            border-radius: 20px; 
+            transition: width 1.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+        }
+        
+        /* --- 5. İÇERİK ALANI (FOTOĞRAF VE NOT) --- */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+        
+        .photo-wrapper {
+            background: #fafafa;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px dashed #ccc;
+        }
+        .santiye-img {
+            width: 100%; 
+            max-height: 400px; 
+            object-fit: cover; 
+            border-radius: 8px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .status-note { 
+            background: #fffdf5; 
+            border-left: 4px solid #ffc107; 
+            padding: 20px; 
+            color: #555; 
+            font-size: 15px; 
+            border-radius: 0 12px 12px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        .status-note i {
+            color: #ffc107;
+            font-size: 20px;
+            margin-top: 2px;
+        }
+
+        /* Boş Durum (Empty State) Tasarımı */
+        .empty-state {
+            text-align: center; 
+            padding: 80px 20px; 
+            background: white; 
+            border-radius: 16px; 
+            box-shadow: var(--shadow-soft);
+            border: 1px dashed #ccc;
+        }
+        .empty-state i {
+            font-size: 50px;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+        .empty-state h3 { color: #333; margin-bottom: 10px; }
+        .empty-state p { color: var(--text-muted); }
+
+        @media (max-width: 768px) {
+            .app-navbar { flex-direction: column; gap: 15px; }
+            .project-header { flex-direction: column; gap: 15px; }
+            .percentage-badge span { text-align: left; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="navbar">
-        <div style="font-size: 20px; font-weight: bold; letter-spacing: 1px;">ZAFER TECH PORTAL</div>
-        <div>
-            <span style="margin-right: 20px; font-size: 14px;">Hoş Geldiniz, {{ request.user.username }}</span>
-            <a href="{% url 'logout' %}">Güvenli Çıkış</a>
+    <nav class="app-navbar">
+        <div class="app-brand">
+            <i class="fa-solid fa-bolt"></i> ZAFER TECH PORTAL
         </div>
-    </div>
+        <div class="user-actions">
+            <span class="greeting"><i class="fa-regular fa-circle-user" style="font-size: 18px;"></i> Hoş Geldiniz, {{ request.user.username }}</span>
+            <form action="{% url 'logout' %}" method="post" style="margin: 0;">
+                {% csrf_token %}
+                <button type="submit" class="btn-logout" style="border: none; cursor: pointer; font-family: 'Poppins', sans-serif;">
+                    <i class="fa-solid fa-right-from-bracket"></i> Güvenli Çıkış
+                </button>
+            </form>
+        </div>
+    </nav>
 
-    <div class="container">
-        <h2 style="color: #444;">Güncel Proje Durumunuz</h2>
-        <p style="color: #777; margin-bottom: 40px;">Bu ekran sadece size özeldir. Sahadaki ekiplerimizin iş ilerleyişini anlık olarak buradan takip edebilirsiniz.</p>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h2>Güncel Proje Durumunuz</h2>
+            <p>Bu ekran sadece size özeldir. Sahadaki ekiplerimizin iş ilerleyişini anlık olarak buradan takip edebilirsiniz.</p>
+        </div>
 
         {% for proje in projeler %}
         <div class="project-card">
+            
             <div class="project-header">
-                <h3>{{ proje.baslik }}</h3>
-                <span class="category-badge">{{ proje.kategori.ad }}</span>
+                <div class="project-title-area">
+                    <h3><i class="fa-solid fa-clipboard-list" style="color: #ccc; font-size: 20px;"></i> {{ proje.baslik }}</h3>
+                    <span class="category-badge">{{ proje.kategori.ad }}</span>
+                </div>
+                <div class="percentage-badge">
+                    %{{ proje.ilerleme_yuzdesi }}
+                    <span>Tamamlanma Oranı</span>
+                </div>
             </div>
             
-            <p style="font-weight: bold; margin-bottom: 5px; color: #333;">Genel İlerleme Durumu</p>
-            
-            <div class="progress-container">
-                <div class="progress-bar" style="width: {{ proje.ilerleme_yuzdesi }}%;">
-                    <span class="progress-text">%{{ proje.ilerleme_yuzdesi }} Tamamlandı</span>
+            <div class="progress-section">
+                <div class="section-label">
+                    <i class="fa-solid fa-chart-line"></i> Genel İlerleme Durumu
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill" style="width: {{ proje.ilerleme_yuzdesi }}%;"></div>
                 </div>
             </div>
         
-            {% if proje.santiye_fotografi %}
-            <div style="margin-top: 20px; text-align: center;">
-                <p style="font-weight: bold; color: #555; text-align: left; margin-bottom: 10px;">Güncel Saha Görüntüsü</p>
-                <img src="{{ proje.santiye_fotografi.url }}" alt="Şantiye Son Durum" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 2px solid #eee;">
-            </div>
-            {% endif %}
+            <div class="content-grid">
+                {% if proje.santiye_fotografi %}
+                <div>
+                    <div class="section-label">
+                        <i class="fa-solid fa-camera"></i> Güncel Saha Görüntüsü
+                    </div>
+                    <div class="photo-wrapper">
+                        <img src="{{ proje.santiye_fotografi.url }}" alt="Şantiye Son Durum" class="santiye-img">
+                    </div>
+                </div>
+                {% endif %}
 
-            {% if proje.son_durum_notu %}
-            <div class="status-note">
-                <strong>Yetkili Notu:</strong> {{ proje.son_durum_notu }}
+                {% if proje.son_durum_notu %}
+                <div style="margin-top: 10px;">
+                    <div class="section-label">
+                        <i class="fa-solid fa-comment-dots"></i> Şantiye Şefi / Yetkili Notu
+                    </div>
+                    <div class="status-note">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <div>{{ proje.son_durum_notu }}</div>
+                    </div>
+                </div>
+                {% endif %}
             </div>
-            {% endif %}
+
         </div>
         
         {% empty %}
-        <div style="text-align: center; padding: 50px; background: white; border-radius: 10px; color: #888;">
+        <div class="empty-state">
+            <i class="fa-solid fa-folder-open"></i>
             <h3>Şu anda aktif bir projeniz bulunmamaktadır.</h3>
             <p>Yeni taahhüt süreçleri veya teklifler için lütfen satış temsilcinizle görüşün.</p>
         </div>
