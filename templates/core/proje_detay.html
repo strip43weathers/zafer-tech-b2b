@@ -61,7 +61,7 @@
 
         <div class="gallery-wrapper">
             <div class="main-image-container">
-                <img id="mainImage" src="{% if proje.fotograflar.first %}{{ proje.fotograflar.first.gorsel.url }}{% else %}{{ proje.gorsel_url }}{% endif %}" alt="{{ proje.baslik }}">
+                <img id="mainImage" src="{% if proje.fotograflar.first %}{{ proje.fotograflar.first.gorsel.url }}{% elif proje.kapak_fotografi %}{{ proje.kapak_fotografi.url }}{% else %}https://via.placeholder.com/800x600?text=Gorsel+Yok{% endif %}" alt="{{ proje.baslik }}">
             </div>
 
             <div class="thumbnails-container">

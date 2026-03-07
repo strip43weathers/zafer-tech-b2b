@@ -13,6 +13,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+        * {
+            box-sizing: border-box;
+        }
+        
         /* Yumuşak kaydırma (Smooth Scroll) eklendi */
         html {
             scroll-behavior: smooth;
@@ -321,7 +325,11 @@
         
         .project-grid { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; }
         .project-card { 
-            width: 350px; background: var(--card-bg); border-radius: 16px; overflow: hidden; 
+            width: 100%; /* Mobil düzeltme: Eskiden 350px idi */
+            max-width: 350px; /* Mobil düzeltme */
+            background: var(--card-bg); 
+            border-radius: 16px; 
+            overflow: hidden; 
         }
         .project-card.gizle { display: none; }
         .project-img { width: 100%; height: 220px; background-color: #ddd; object-fit: cover; }
@@ -413,6 +421,58 @@
         }
         .footer-bottom a { color: #666; text-decoration: none; transition: color 0.3s;}
         .footer-bottom a:hover { color: #fff; }
+
+        /* ====== MOBİL UYUM (RESPONSIVE) KODLARI ====== */
+        @media (max-width: 992px) {
+            /* Menü ve Navbar */
+            .pro-navbar { flex-wrap: wrap; padding: 15px 5%; }
+            .mobile-menu-btn { display: block !important; }
+            
+            .nav-menu {
+                display: none; /* İlk başta gizli */
+                width: 100%;
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+                padding-top: 20px;
+                border-top: 1px solid var(--border-color);
+                margin-top: 15px;
+            }
+            .nav-menu.active { display: flex; } /* Butona basılınca açılır */
+            
+            .nav-actions {
+                display: none; 
+                width: 100%;
+                justify-content: center;
+                margin-top: 15px;
+            }
+            .nav-actions.active { display: flex; }
+        
+            /* Hero Alanı Yazıları ve Boşlukları */
+            .hero-section {
+                padding: 60px 5%;
+                text-align: center;
+                min-height: auto;
+            }
+            .hero-content h1 { font-size: 36px; line-height: 1.3; }
+            .hero-content p { font-size: 16px; }
+            .hero-buttons { justify-content: center; }
+        
+            /* Servisler ve Hesaplayıcı Alanı Grid Düzeltmeleri */
+            .services-grid { grid-template-columns: 1fr; }
+            .calculator-section {
+                grid-template-columns: 1fr;
+                padding: 30px 20px;
+                gap: 30px;
+            }
+            
+            /* Footer Hizalaması */
+            .footer-container {
+                text-align: center;
+                gap: 30px;
+            }
+            .footer-contact li { justify-content: center; }
+        }
     </style>
 </head>
 <body>
@@ -421,6 +481,10 @@
         <a href="/" class="nav-brand">
             <img src="{% static 'core/images/logo.png' %}" alt="Zafer Tech Logo" style="height: 60px; width: auto;"> ZAFER TECH
         </a>
+        
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()" style="display: none; background: none; border: none; font-size: 28px; color: var(--primary-color); cursor: pointer;">
+            <i class="fa-solid fa-bars"></i>
+        </button>
         
         <ul class="nav-menu">
             <li><a href="/">Ana Sayfa</a></li>
@@ -582,7 +646,11 @@ güvenilir ve sürdürülebilir çözümler sunmaktadır.
                 <div class="project-card" data-kategori="{{ proje.kategori.slug }}">
                     
                     <a href="{% url 'proje_detay' proje.id %}" style="text-decoration: none; color: inherit; display: block;">
-                        <img src="{{ proje.gorsel_url|default:'https://via.placeholder.com/400x300?text=Proje+Gorseli' }}" alt="{{ proje.baslik }}" class="project-img">
+                        {% if proje.kapak_fotografi %}
+                            <img src="{{ proje.kapak_fotografi.url }}" alt="{{ proje.baslik }}" class="project-img">
+                        {% else %}
+                            <img src="https://via.placeholder.com/400x300?text=Gorsel+Yok" alt="{{ proje.baslik }}" class="project-img">
+                        {% endif %}
                         <div class="project-info" style="padding-bottom: 0;">
                             <span class="project-category">{{ proje.kategori.ad }}</span>
                             <h4 style="transition: color 0.3s;" onmouseover="this.style.color='var(--secondary-color)'" onmouseout="this.style.color='var(--primary-color)'">{{ proje.baslik }}</h4>
@@ -657,7 +725,7 @@ güvenilir ve sürdürülebilir çözümler sunmaktadır.
                 <h3>İletişim</h3>
                 <ul class="footer-links footer-contact">
                     <li><i class="fa-solid fa-location-dot"></i> <span>Müşteriden alınacak adres bilgisi buraya gelecek.<br>İstanbul, Türkiye</span></li>
-                    <li><i class="fa-solid fa-phone"></i> <span>+90 (XXX) XXX XX XX</span></li>
+                    <li><i class="fa-solid fa-phone"></i> <span>+90 (536) 333 94 78</span></li>
                     <li><i class="fa-solid fa-envelope"></i> <span>info@zafertech.com</span></li>
                     <li><i class="fa-solid fa-globe"></i> <span>www.zafertech.com</span></li>
                 </ul>
@@ -753,6 +821,12 @@ güvenilir ve sürdürülebilir çözümler sunmaktadır.
 
             const ids = secilenler.join(',');
             window.location.href = '/pdf-indir/?ids=' + ids;
+        }
+
+        // --- 5. MOBİL MENÜ MOTORU EKLENDİ ---
+        function toggleMobileMenu() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+            document.querySelector('.nav-actions').classList.toggle('active');
         }
     </script>
 </body>

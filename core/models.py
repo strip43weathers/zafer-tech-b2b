@@ -43,7 +43,13 @@ class Proje(models.Model):
     baslik = models.CharField(max_length=200, verbose_name="Proje Adı (Örn: Doğuş Oto Kartal)")
     aciklama = models.TextField(blank=True, verbose_name="Kısa Açıklama")
     kategori = models.ForeignKey('Kategori', on_delete=models.CASCADE, related_name='projeler')
-    gorsel_url = models.URLField(blank=True, help_text="Geçici test için görsel linki")
+    kapak_fotografi = models.ImageField(
+        upload_to='proje_kapaklari/',
+        blank=True,
+        null=True,
+        verbose_name="Kapak Fotoğrafı",
+        help_text="Proje kartlarında görünecek ana fotoğraf."
+    )
 
     # --- YENİ EKLENEN B2B PORTAL ALANLARI ---
     musteri = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Atanan Müşteri",
