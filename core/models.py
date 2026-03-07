@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
+
 
 class EnerjiHesaplayiciAyar(models.Model):
     guncel_kwh_fiyati = models.DecimalField(
@@ -73,6 +75,9 @@ class Proje(models.Model):
     def __str__(self):
         return self.baslik
 
+    def get_absolute_url(self):
+        return reverse('proje_detay', kwargs={'proje_id': self.id})
+
 class ProjeGorseli(models.Model):
     proje = models.ForeignKey(Proje, on_delete=models.CASCADE, related_name='fotograflar', verbose_name="Ait Olduğu Proje")
     gorsel = models.ImageField(upload_to='proje_galerisi/', verbose_name="Fotoğraf")
@@ -102,4 +107,7 @@ class BlogYazisi(models.Model):
 
     def __str__(self):
         return self.baslik
+
+    def get_absolute_url(self):
+        return reverse('blog_detay', kwargs={'blog_id': self.id})
 
