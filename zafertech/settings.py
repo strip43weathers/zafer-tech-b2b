@@ -11,7 +11,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 DEBUG = os.getenv('DEBUG') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['142.93.107.146', 'zafertech.com', 'www.zafertech.com', 'localhost', '127.0.0.1']
 
 
 INSTALLED_APPS = [
@@ -55,12 +55,24 @@ TEMPLATES = [
 WSGI_APPLICATION = 'zafertech.wsgi.application'
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'zafertech',
+            'USER': 'zaferadmin',
+            'PASSWORD': 'zafer_tech142536', # Sunucuda oluşturduğun şifre
+            'HOST': 'localhost',
+            'PORT': '5432',
+        }
+    }
 
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -98,3 +110,5 @@ LOGIN_URL = 'login'
 # Kullanıcıların yüklediği dosyalar (Media Files) için ayarlar
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
