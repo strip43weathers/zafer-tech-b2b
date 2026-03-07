@@ -450,10 +450,12 @@
         
             /* Hero Alanı Yazıları ve Boşlukları */
             .hero-section {
-                padding: 60px 5%;
+                padding: 120px 5% 80px 5%; /* Üstten ve alttan ekstra boşluk vererek nefes aldırır */
                 text-align: center;
-                min-height: auto;
+                height: auto; /* Sabit yüksekliği iptal edip içeriğe göre uzamasını sağlar */
+                min-height: 100vh; /* Arka planın en az telefon ekranının tamamını kaplamasını garanti eder */
             }
+            
             .hero-content h1 { font-size: 36px; line-height: 1.3; }
             .hero-content p { font-size: 16px; }
             .hero-buttons { justify-content: center; }
