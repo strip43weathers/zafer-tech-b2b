@@ -258,6 +258,58 @@
         
         .service-card h3 { font-size: 22px; color: var(--text-color); margin-bottom: 15px; }
         .service-card p { font-size: 15px; color: var(--card-text-color); line-height: 1.7; margin: 0; }
+        
+        /* --- WHATSAPP İLETİŞİM ALANI STİLLERİ --- */
+.whatsapp-cta-section {
+    max-width: 1000px;
+    margin: 40px auto -40px auto; /* Hesaplayıcı ile arasındaki boşluğu dengeler */
+    text-align: center;
+    padding: 40px 20px;
+    background: var(--card-bg);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px var(--shadow-color);
+    border: 1px solid var(--border-color);
+    position: relative;
+    z-index: 10;
+}
+.whatsapp-cta-section h3 {
+    color: var(--primary-color);
+    font-size: 28px;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+.whatsapp-cta-section p {
+    color: var(--card-text-color);
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+.btn-whatsapp {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    color: white !important;
+    padding: 16px 40px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 600;
+    box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
+    transition: all 0.3s ease;
+}
+.btn-whatsapp:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 30px rgba(37, 211, 102, 0.4);
+}
+.btn-whatsapp i {
+    font-size: 24px;
+}
+
+@media (max-width: 768px) {
+    .whatsapp-cta-section { margin: 20px 20px -20px 20px; padding: 30px 15px; }
+    .whatsapp-cta-section h3 { font-size: 24px; }
+    .btn-whatsapp { padding: 14px 30px; font-size: 16px; }
+}
 
         /* --- 7. YENİ MODERN HESAPLAYICI STİLLERİ --- */
         .calculator-section {
@@ -598,6 +650,14 @@ güvenilir ve sürdürülebilir çözümler sunmaktadır.
         </div>
     </div>
 </section>
+    
+<section class="whatsapp-cta-section">
+    <h3>Projeleriniz İçin Uzman Desteği Alın</h3>
+    <p>Elektrik taahhüt, danışmanlık veya LED dönüşüm projeleriniz için mühendislerimizle hemen görüşün. Size en uygun teknik ve ekonomik çözümleri sunalım.</p>
+    <a href="https://wa.me/905363339478" target="_blank" class="btn-whatsapp">
+        <i class="fa-brands fa-whatsapp"></i> WhatsApp'tan İletişime Geçin
+    </a>
+</section>    
 
 <section class="calculator-section" id="hesaplayici">
     
@@ -680,30 +740,32 @@ güvenilir ve sürdürülebilir çözümler sunmaktadır.
         <div class="marquee-container">
             <div class="marquee-track">
                 <img src="{% static 'core/images/referanslar/qurtub.png' %}" alt="Aslan" class="reference-logo">
-                <img src="{% static 'core/images/referanslar/kiyi.png' %}" alt="At" class="reference-logo">
+                <img src="{% static 'core/images/referanslar/kiyii.png' %}" alt="At" class="reference-logo">
                 <img src="{% static 'core/images/referanslar/barets.png' %}" alt="Kedi" class="reference-logo">
-                <img src="{% static 'core/images/referanslar/midas.png' %}" alt="Konum" class="reference-logo">
-                <img src="{% static 'core/images/referanslar/lesbenjamins.png' %}" alt="Dağ" class="reference-logo">
-                <img src="{% static 'core/images/referanslar/dogusoto.png' %}" alt="Su" class="reference-logo">
-                <img src="{% static 'core/images/referanslar/gant.png' %}" alt="Aslan" class="reference-logo">
-                <img src="{% static 'core/images/referanslar/horoz.png' %}" alt="At" class="reference-logo">
-                <img src="{% static 'core/images/referanslar/pierrecardin.png' %}" alt="Kedi" class="reference-logo">
-                <img src="{% static 'core/images/referanslar/trion.png' %}" alt="Konum" class="reference-logo">
+                <img src="{% static 'core/images/referanslar/midasi.png' %}" alt="Konum" class="reference-logo">
+                <img src="{% static 'core/images/referanslar/lesbenjamin.png' %}" alt="Dağ" class="reference-logo">
+                <img src="{% static 'core/images/referanslar/dogusotoi.png' %}" alt="Su" class="reference-logo">
+                <img src="{% static 'core/images/referanslar/ganti.png' %}" alt="Aslan" class="reference-logo">
+                <img src="{% static 'core/images/referanslar/horozi.png' %}" alt="At" class="reference-logo">
+                <img src="{% static 'core/images/referanslar/pierrecardini.png' %}" alt="Kedi" class="reference-logo">
+                <img src="{% static 'core/images/referanslar/trioni.png' %}" alt="Konum" class="reference-logo">
                 <img src="{% static 'core/images/referanslar/fakimehmet.png' %}" alt="Dağ" class="reference-logo">
                 <img src="{% static 'core/images/referanslar/lal.png' %}" alt="Su" class="reference-logo">
+                <img src="{% static 'core/images/referanslar/0770.png' %}" alt="At" class="reference-logo">
                 
                 <img src="{% static 'core/images/referanslar/qurtub.png' %}" alt="Aslan" class="reference-logo">
-                <img src="{% static 'core/images/referanslar/kiyi.png' %}" alt="At" class="reference-logo">
+                <img src="{% static 'core/images/referanslar/kiyii.png' %}" alt="At" class="reference-logo">
                 <img src="{% static 'core/images/referanslar/barets.png' %}" alt="Kedi" class="reference-logo">
-                <img src="{% static 'core/images/referanslar/midas.png' %}" alt="Konum" class="reference-logo">
-                <img src="{% static 'core/images/referanslar/lesbenjamins.png' %}" alt="Dağ" class="reference-logo">
-                <img src="{% static 'core/images/referanslar/dogusoto.png' %}" alt="Su" class="reference-logo">
-                <img src="{% static 'core/images/referanslar/gant.png' %}" alt="Aslan" class="reference-logo">
-                <img src="{% static 'core/images/referanslar/horoz.png' %}" alt="At" class="reference-logo">
-                <img src="{% static 'core/images/referanslar/ierrecardin.png' %}" alt="Kedi" class="reference-logo">
-                <img src="{% static 'core/images/referanslar/trion.png' %}" alt="Konum" class="reference-logo">
+                <img src="{% static 'core/images/referanslar/midasi.png' %}" alt="Konum" class="reference-logo">
+                <img src="{% static 'core/images/referanslar/lesbenjamin.png' %}" alt="Dağ" class="reference-logo">
+                <img src="{% static 'core/images/referanslar/dogusotoi.png' %}" alt="Su" class="reference-logo">
+                <img src="{% static 'core/images/referanslar/ganti.png' %}" alt="Aslan" class="reference-logo">
+                <img src="{% static 'core/images/referanslar/horozi.png' %}" alt="At" class="reference-logo">
+                <img src="{% static 'core/images/referanslar/pierrecardini.png' %}" alt="Kedi" class="reference-logo">
+                <img src="{% static 'core/images/referanslar/trioni.png' %}" alt="Konum" class="reference-logo">
                 <img src="{% static 'core/images/referanslar/fakimehmet.png' %}" alt="Dağ" class="reference-logo">
                 <img src="{% static 'core/images/referanslar/lal.png' %}" alt="Su" class="reference-logo">
+                <img src="{% static 'core/images/referanslar/0770.png' %}" alt="Su" class="reference-logo">
             </div>
         </div>
     </section>
