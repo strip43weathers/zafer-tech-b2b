@@ -80,3 +80,20 @@ class ProjeGorseli(models.Model):
     def __str__(self):
         return f"{self.proje.baslik} - Görsel"
 
+
+class BlogYazisi(models.Model):
+    baslik = models.CharField(max_length=200, verbose_name="Başlık")
+    ozet = models.TextField(verbose_name="Kısa Özet", help_text="Blog listesinde görünecek kısa açıklama.")
+    icerik = models.TextField(verbose_name="İçerik")
+    gorsel = models.ImageField(upload_to='blog_gorselleri/', blank=True, null=True, verbose_name="Kapak Görseli")
+    olusturulma_tarihi = models.DateTimeField(auto_now_add=True, verbose_name="Yayın Tarihi")
+    yayinda_mi = models.BooleanField(default=True, verbose_name="Yayında mı?", help_text="Taslak olarak kaydetmek isterseniz işareti kaldırın.")
+
+    class Meta:
+        verbose_name = "Blog Yazısı"
+        verbose_name_plural = "Blog Yazıları"
+        ordering = ['-olusturulma_tarihi'] # En yeni yazılar en üstte görünsün
+
+    def __str__(self):
+        return self.baslik
+

@@ -15,6 +15,8 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='core/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='/'), name='logout'),
     path('proje/<int:proje_id>/', views.proje_detay, name='proje_detay'),
+    path('blog/', views.blog_liste, name='blog_liste'),
+    path('blog/<int:blog_id>/', views.blog_detay, name='blog_detay'),
 ]
 
 # Eğer geliştirme modundaysak (DEBUG=True), yüklenen medyaları sunabilmek için:

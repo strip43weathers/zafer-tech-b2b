@@ -1,7 +1,7 @@
 import os
 from django.conf import settings
 from django.shortcuts import render, get_object_or_404
-from .models import EnerjiHesaplayiciAyar, Kategori, Proje
+from .models import EnerjiHesaplayiciAyar, Kategori, Proje, BlogYazisi
 from django.http import HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
@@ -94,3 +94,20 @@ def proje_detay(request, proje_id):
         'proje': secilen_proje
     }
     return render(request, 'core/proje_detay.html', context)
+
+
+def blog_liste(request):
+    # Sadece 'yayinda_mi' işaretli olanları getir ve tarihe göre sırala
+    yazilar = BlogYazisi.objects.filter(yayinda_mi=True).order_by('-olusturulma_tarihi')
+    context = {
+        'yazilar': yazilar
+    }
+    return render(request, 'core/blog_liste.html', context)
+
+def blog_detay(request, blog_id):
+    # Yazı bulunamazsa veya yayında değilse 404 ver
+    yazi = get_object_or_404(BlogYazisi, id=blog_id, yayinda_mi=True)
+    context = {
+        'yazi': yazi
+    }
+    return render(request, 'core/blog_detay.html', context)
