@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from core import views
 from django.contrib.sitemaps.views import sitemap
@@ -24,6 +24,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(next_page='/'), name='logout'),
     path('proje/<int:proje_id>/', views.proje_detay, name='proje_detay'),
     path('blog/', views.blog_liste, name='blog_liste'),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
     path('blog/<int:blog_id>/', views.blog_detay, name='blog_detay'),
     path('robots.txt', TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),

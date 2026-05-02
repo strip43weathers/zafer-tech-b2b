@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
-
+from ckeditor_uploader.fields import RichTextUploadingField
 
 class EnerjiHesaplayiciAyar(models.Model):
     guncel_kwh_fiyati = models.DecimalField(
@@ -52,8 +52,9 @@ class Proje(models.Model):
         verbose_name="Kapak Fotoğrafı",
         help_text="Proje kartlarında görünecek ana fotoğraf."
     )
+    sira = models.IntegerField(default=0, verbose_name="Gösterim Sırası",
+                               help_text="Küçük sayı en üstte/önce gösterilir (Örn: 1 en üstte).")
 
-    # --- YENİ EKLENEN B2B PORTAL ALANLARI ---
     musteri = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Atanan Müşteri",
                                 help_text="Bu projeyi hangi müşteri kendi panelinde görecek?")
     ilerleme_yuzdesi = models.IntegerField(default=0, verbose_name="İlerleme Durumu (%)",
@@ -71,6 +72,7 @@ class Proje(models.Model):
     class Meta:
         verbose_name = "Proje"
         verbose_name_plural = "Projeler"
+        ordering = ['sira', '-id']
 
     def __str__(self):
         return self.baslik
@@ -95,7 +97,7 @@ class ProjeGorseli(models.Model):
 class BlogYazisi(models.Model):
     baslik = models.CharField(max_length=200, verbose_name="Başlık")
     ozet = models.TextField(verbose_name="Kısa Özet", help_text="Blog listesinde görünecek kısa açıklama.")
-    icerik = models.TextField(verbose_name="İçerik")
+    icerik = RichTextUploadingField(verbose_name="İçerik")
     gorsel = models.ImageField(upload_to='blog_gorselleri/', blank=True, null=True, verbose_name="Kapak Görseli")
     olusturulma_tarihi = models.DateTimeField(auto_now_add=True, verbose_name="Yayın Tarihi")
     yayinda_mi = models.BooleanField(default=True, verbose_name="Yayında mı?", help_text="Taslak olarak kaydetmek isterseniz işareti kaldırın.")

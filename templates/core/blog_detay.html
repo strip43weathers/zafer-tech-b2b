@@ -7,7 +7,7 @@
     <title>Zafer Tech | {{ yazi.baslik }}</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; } /* Kutu modeli düzeltmesi */
+        * { box-sizing: border-box; } 
         body { font-family: 'Poppins', sans-serif; background-color: #f8f9fa; margin: 0; color: #333; }
         
         .pro-navbar { background-color: #fff; display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
@@ -19,7 +19,12 @@
         .blog-date { color: #888; font-size: 14px; display: block; margin-bottom: 10px;}
         .blog-title { color: #111; font-size: 32px; margin: 0 0 20px 0; line-height: 1.3; }
         .blog-main-img { width: 100%; max-height: 400px; object-fit: cover; border-radius: 10px; margin-bottom: 30px; }
-        .blog-body { font-size: 16px; line-height: 1.8; color: #444; white-space: pre-line; word-wrap: break-word; }
+        
+        /* DÜZELTİLDİ: white-space: pre-line; kaldırıldı çünkü CKEditor zaten kendi HTML yapısını kuruyor */
+        .blog-body { font-size: 16px; line-height: 1.8; color: #444; word-wrap: break-word; }
+        
+        /* CKEditor içinden eklenen fotoğrafların mobilde taşmasını engellemek için ufak bir ayar */
+        .blog-body img { max-width: 100%; height: auto; border-radius: 8px; }
 
         /* Mobil Uyum Kodları */
         @media (max-width: 768px) {
@@ -48,7 +53,8 @@
         {% endif %}
 
         <div class="blog-body">
-            {{ yazi.icerik }}
+            <!-- DÜZELTİLDİ: |safe filtresi eklendi -->
+            {{ yazi.icerik|safe }}
         </div>
     </div>
 

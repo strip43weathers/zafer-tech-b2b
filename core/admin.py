@@ -15,9 +15,9 @@ class ProjeGorseliInline(admin.TabularInline):
 
 @admin.register(Proje)
 class ProjeAdmin(admin.ModelAdmin):
-    list_display = ['baslik', 'kategori', 'musteri', 'ilerleme_yuzdesi']
+    list_display = ['baslik', 'kategori', 'musteri', 'ilerleme_yuzdesi', 'sira']
     list_filter = ['kategori', 'musteri']
-    list_editable = ['ilerleme_yuzdesi']
+    list_editable = ['ilerleme_yuzdesi', 'sira']
     inlines = [ProjeGorseliInline] # Galeriyi projenin içine gömdük!
 @admin.register(BlogYazisi)
 class BlogYazisiAdmin(admin.ModelAdmin):
